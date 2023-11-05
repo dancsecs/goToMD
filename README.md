@@ -16,11 +16,9 @@ code.)
 It can use a template file (```*.md.gtm```) or can maintain a ```*.md``` file
 in place.
 
-Usage: goToMD [flags] [path ...]
+Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] path [path...]
 
 The flags are:
-
-Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] file|dir [file|dir...]
 
     -c
         Reverse operation and remove generated markdown (Cannot be used
