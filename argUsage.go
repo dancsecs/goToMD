@@ -1,0 +1,115 @@
+// Program runs a specific go test transforming the output
+// to github compatible markdown.  This is used within this
+// project to help automate keeping the README.md up to date
+// when an example changes.
+
+package main
+
+/*
+   Golang To Github Markdown: goToMD.
+   Copyright (C) 2023  Leslie Dancsecs
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+import (
+	"flag"
+	"fmt"
+	"os"
+	"strings"
+)
+
+//nolint:goCheckNoGlobals // Ok.
+var (
+	cleanOnly      = false
+	forceOverwrite = false
+	replace        = false
+	verbose        = false
+	outputDir      = "."
+	defaultPerm    = 0744
+)
+
+func usage() {
+	cmdName := os.Args[0]
+	fmt.Fprint(flag.CommandLine.Output(),
+		"Usage of ", cmdName,
+		" [-c | -r] [-fv] [-p perm] [-o outDir] file|dir [file|dir...]\n",
+	)
+	flag.PrintDefaults()
+}
+
+func captureFlagDefaults() string {
+	buf := strings.Builder{}
+	origOut := flag.CommandLine.Output()
+	defer func() {
+		flag.CommandLine.SetOutput(origOut)
+	}()
+	flag.CommandLine.SetOutput(&buf)
+
+	flag.CommandLine.Usage()
+	return buf.String()
+}
+
+func processArgs() {
+	flag.BoolVar(&verbose, "v", false,
+		"Provide more information woth respect to processing.",
+	)
+	flag.BoolVar(&cleanOnly, "c", false,
+		"Reverse operation and remove generated markdown "+
+			"(Cannot be used with the -r option).",
+	)
+	flag.BoolVar(&replace, "r", false,
+		"Replace the *.MD in place (Cannot be used with the -c flag).",
+	)
+	flag.BoolVar(&forceOverwrite, "f", false,
+		"Do not confirm overwrite of destination.",
+	)
+	flag.StringVar(&outputDir, "o", ".",
+		"Direct all output to the specified directory.",
+	)
+	const defaultPermissions = 0644
+	flag.IntVar(&defaultPerm, "p", defaultPermissions,
+		"Permissions to use when creating new file (can only set RW bits).",
+	)
+
+	flag.CommandLine.Usage = usage
+	_ = flag.CommandLine.Parse(os.Args[1:])
+
+	if flag.CommandLine.NArg() < 1 {
+		panic("at least one file or directory must be specified\n" +
+			captureFlagDefaults(),
+		)
+	}
+
+	if defaultPerm&(^0666) != 0 {
+		panic("invalid default permissions specified\n" +
+			captureFlagDefaults(),
+		)
+	}
+
+	if replace && cleanOnly {
+		panic("only one of -c and -r may be specified\n" +
+			captureFlagDefaults(),
+		)
+	}
+
+	if outputDir != "." {
+		s, err := os.Stat(outputDir)
+		if err != nil || !s.IsDir() {
+			panic("invalid output directory specified: " + outputDir + "\n" +
+				captureFlagDefaults(),
+			)
+		}
+	}
+}
