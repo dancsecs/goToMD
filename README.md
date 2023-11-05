@@ -13,7 +13,7 @@ included by reference into the github README.md file directly from the Go
 code permitting program documentation to be maintained in one place (the Go
 code.)
 
-It can use a template file (```*.md.gtm") or can maintain a ```*.md``` file
+It can use a template file (```*.md.gtm```) or can maintain a ```*.md``` file
 in place.
 
 Usage: goToMD [flags] [path ...]
