@@ -33,6 +33,7 @@ var (
 	verbose        = false
 	outputDir      = "."
 	defaultPerm    = 0744
+	showLicense    = false
 )
 
 func usage() {
@@ -66,6 +67,9 @@ func processArgs() {
 	)
 	flag.BoolVar(&replace, "r", false,
 		"Replace the *.MD in place (Cannot be used with the -c flag).",
+	)
+	flag.BoolVar(&showLicense, "l", false,
+		"Display license before program exits.",
 	)
 	flag.BoolVar(&forceOverwrite, "f", false,
 		"Do not confirm overwrite of destination.",

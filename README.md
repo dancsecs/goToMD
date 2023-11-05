@@ -20,7 +20,7 @@ Usage: goToMD [flags] [path ...]
 
 The flags are:
 
-Usage of goToMD [-c | -r] [-fv] [-p perm] [-o outDir] file|dir [file|dir...]
+Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] file|dir [file|dir...]
 
     -c
         Reverse operation and remove generated markdown (Cannot be used
@@ -28,6 +28,8 @@ Usage of goToMD [-c | -r] [-fv] [-p perm] [-o outDir] file|dir [file|dir...]
         a an .md.gtm file being produced.
     -f
         Do not confirm overwrite of destination.
+    -l
+        Display license before program exits.
     -o string
         Direct all output to the specified directory. (default ".")
     -p int
@@ -73,7 +75,7 @@ where ACTION can be one of the following:
          Include the specified file in a code block.
 
 When expanded in the target file the content will be framed by similar
-comments prefixed with Bgn and end with:
+comments prefixed with Bgn and end as:
 
 const szTestBgnPrefix = szTestPrefix + "Bgn::"
 const szTestEndPrefix = szTestPrefix + "End::"

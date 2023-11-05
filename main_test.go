@@ -742,6 +742,7 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 	chk.SetupArgsAndFlags([]string{
 		"programName",
 		"-v",
+		"-l",
 		"-c",
 		"-o", altDir,
 		filepath.Join(dir, "README.md"),
@@ -756,7 +757,8 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 
 	pName := filepath.Join(dir, "README.md")
 	chk.Stdout(
-		"filesToProcess:  " + pName,
+		"filesToProcess:  "+pName,
+		license,
 	)
 	chk.Log(
 		"Cleaning README.md to: README.md.gtm in dir: " + dir,

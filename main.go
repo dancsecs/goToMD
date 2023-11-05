@@ -13,7 +13,7 @@ Usage: goToMD [flags] [path ...]
 
 The flags are:
 
-Usage of goToMD [-c | -r] [-fv] [-p perm] [-o outDir] file|dir [file|dir...]
+Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] file|dir [file|dir...]
 
     -c
         Reverse operation and remove generated markdown (Cannot be used
@@ -21,6 +21,8 @@ Usage of goToMD [-c | -r] [-fv] [-p perm] [-o outDir] file|dir [file|dir...]
         a an .md.gtm file being produced.
     -f
         Do not confirm overwrite of destination.
+    -l
+        Display license before program exits.
     -o string
         Direct all output to the specified directory. (default ".")
     -p int
@@ -67,7 +69,7 @@ where ACTION can be one of the following:
 
 
 When expanded in the target file the content will be framed by similar
-comments prefixed with Bgn and end with:
+comments prefixed with Bgn and end as:
 
 const szTestBgnPrefix = szTestPrefix + "Bgn::"
 const szTestEndPrefix = szTestPrefix + "End::"
@@ -82,27 +84,28 @@ warning is included.
 */
 package main
 
-/*
-   Golang To Github Markdown: goToMD.
-   Copyright (C) 2023  Leslie Dancsecs
-
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
 import (
+	"fmt"
 	"os"
 )
+
+const license = `
+Golang To Github Markdown: goToMD.
+Copyright (C) 2023  Leslie Dancsecs
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+`
 
 func main() {
 	var err error
@@ -133,6 +136,10 @@ func main() {
 				err = expandMD(filesToProcess[i])
 			}
 		}
+	}
+
+	if showLicense {
+		fmt.Print(license)
 	}
 
 	if err != nil {
