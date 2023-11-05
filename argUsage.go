@@ -1,8 +1,3 @@
-// Program runs a specific go test transforming the output
-// to github compatible markdown.  This is used within this
-// project to help automate keeping the README.md up to date
-// when an example changes.
-
 package main
 
 /*
