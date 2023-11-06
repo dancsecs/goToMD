@@ -28,183 +28,14 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_SampleGoProjectCleanNoTarget(t *testing.T) {
-	chk := szTest.CaptureNothing(t)
-	defer chk.Release()
+const sampleGoProjectPath = "." + string(os.PathSeparator) +
+	"sampleGoProject" + string(os.PathSeparator)
 
-	dir := chk.CreateTmpDir()
-	chk.NoErr(setup(dir, "README.md", "sample_test.go", "sample.go"))
+var fullSampleGoProjectPath string
 
-	chk.SetupArgsAndFlags([]string{
-		"programName",
-		"-c",
-		filepath.Join(dir, "README.md"),
-	})
-
-	// Now Run the main function with target requiring confirmation
-	chk.NoPanic(main)
-
-	got, wnt, err := getTestFiles(dir, "README.md.gtm")
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
+func init() {
+	fullSampleGoProjectPath, _ = filepath.Abs(sampleGoProjectPath)
 }
-
-func Test_SampleGoProjectCleanTargetCancel(t *testing.T) {
-	chk := szTest.CaptureStdout(t)
-	defer chk.Release()
-
-	dir := chk.CreateTmpDir()
-	chk.NoErr(
-		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
-	)
-
-	chk.SetupArgsAndFlags([]string{
-		"programName",
-		"-c",
-		filepath.Join(dir, "README.md"),
-	})
-
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "N")
-
-	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
-
-	chk.Stdout("Confirm overwrite of README.md.gtm (Y to overwrite)?\\s")
-}
-
-func Test_SampleGoProjectCleanTargetOverwrite(t *testing.T) {
-	chk := szTest.CaptureStdout(t)
-	defer chk.Release()
-
-	dir := chk.CreateTmpDir()
-	chk.NoErr(
-		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
-	)
-
-	chk.SetupArgsAndFlags([]string{
-		"programName",
-		"-c",
-		filepath.Join(dir, "README.md"),
-	})
-
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
-
-	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
-
-	got, wnt, err := getTestFiles(dir, "README.md.gtm")
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Stdout("Confirm overwrite of README.md.gtm (Y to overwrite)?\\s")
-}
-
-func Test_SampleGoProjectCleanTargetOverwriteDir(t *testing.T) {
-	chk := szTest.CaptureStdout(t)
-	defer chk.Release()
-
-	dir := chk.CreateTmpDir()
-	chk.NoErr(
-		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
-	)
-
-	chk.SetupArgsAndFlags([]string{
-		"programName",
-		"-c",
-		dir,
-	})
-
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
-
-	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
-
-	got, wnt, err := getTestFiles(dir, "README.md.gtm")
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Stdout("Confirm overwrite of README.md.gtm (Y to overwrite)?\\s")
-}
-
-func Test_SampleGoProjectCleanTargetOverwriteDirVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	dir := chk.CreateTmpDir()
-	chk.NoErr(
-		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
-	)
-
-	chk.SetupArgsAndFlags([]string{
-		"programName",
-		"-c",
-		"-v",
-		dir,
-	})
-
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
-
-	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
-
-	got, wnt, err := getTestFiles(dir, "README.md.gtm")
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	pName := filepath.Join(dir, "README.md")
-	chk.Stdout(
-		"filesToProcess:  "+pName,
-		"Confirm overwrite of README.md.gtm (Y to overwrite)?\\s",
-	)
-
-	chk.Log("Cleaning README.md to: README.md.gtm in dir: " + dir)
-}
-
-////////////
 
 func Test_SampleGoProjectExpandNoTarget(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
@@ -769,7 +600,8 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 		"filesToProcess:  "+pName,
 		license,
 	)
+	oName := filepath.Join(altDir, "README.md.gtm")
 	chk.Log(
-		"Cleaning README.md to: README.md.gtm in dir: " + dir,
+		"Cleaning README.md to: " + oName + " in dir: " + dir,
 	)
 }

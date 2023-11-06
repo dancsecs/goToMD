@@ -60,7 +60,7 @@ func cleanMD(completePath string) error {
 	if err == nil {
 		absDir = filepath.Dir(absCompletePath)
 		srcFile = filepath.Base(absCompletePath)
-		dstFile = srcFile + ".gtm"
+		dstFile = filepath.Join(outputDir, srcFile+".gtm")
 	}
 
 	if verbose {
@@ -90,7 +90,7 @@ func cleanMD(completePath string) error {
 		var f *os.File
 
 		//nolint:gosec // Ok.
-		f, err = os.OpenFile(filepath.Join(outputDir, dstFile),
+		f, err = os.OpenFile(dstFile,
 			os.O_TRUNC|os.O_WRONLY|os.O_CREATE,
 			os.FileMode(defaultPerm),
 		)
