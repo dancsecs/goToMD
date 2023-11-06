@@ -42,6 +42,7 @@ are emebbed into HTML style comments.
 where ACTION can be one of the following:
 
 - goToMD::doc::./relativeDirectory/goObject
+
         Run the go doc command on the object listed from the directory
         specified.  The PARAMETER is foramtted with the relative directory up
         to the last directory seperater before the end of the string and the
@@ -49,24 +50,29 @@ where ACTION can be one of the following:
         comments.
 
 - goToMD::dcls::./relativeDirectory/declaredObject ListOfDeclaredGoObjects
+
         Pull out the declaration for the object and include as a single line
         regardless of how declaed in the go code.  The Parameter is a list of
         go functions, methods and constants (more object coming) to be included
         in a go code block. No comments are included.
 
 - goToMD::dcln::./relativeDirectory/delaredObject ListOfDeclaredGoObjects
+
          Pull the declaration and include exactly as declared in the go
          source including leading comments.
 
 - goToMD::dcl::./relativeDirectory/delaredObject ListOfDeclaredGoObjects
+
          Pull the declaration and include exactly as declared in the go
          source.  No Comments are included.
 
 - goToMD::tst::goTest::./relativeDirectory/testName
+
          Run go test with the tests listed (or package) to run all tests and
          included the output.
 
 - goToMD::file::./relativeDirectory/fName
+
          Include the specified file in a code block.
 
 
