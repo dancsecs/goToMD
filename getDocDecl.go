@@ -91,3 +91,39 @@ func expandGoDclSingle(cmd string) (string, error) {
 			szTestEndPrefix + szDclsPrefix + cmd + " -->\n",
 		nil
 }
+
+func getDocDeclNatural(cmd string) (string, error) {
+	var d *docInfo
+	res := ""
+	dir, action, err := parseCmd(cmd)
+	if err == nil {
+		items := strings.Split(action, " ")
+		mi := len(items)
+		for i := 0; i < mi && err == nil; i++ {
+			d, err = getInfo(dir, items[i])
+			if err == nil {
+				if res != "" {
+					res += "\n\n"
+				}
+				res += d.naturalComments()
+				res += d.oneLine()
+			}
+		}
+	}
+	if err == nil {
+		return res, nil
+	}
+	return "", err
+}
+
+func expandGoDclNatural(cmd string) (string, error) {
+	doc, err := getDocDeclNatural(cmd)
+	if err != nil {
+		return "", err
+	}
+	return "" +
+			szTestBgnPrefix + szDclnPrefix + cmd + " -->\n" +
+			"```go\n" + doc + "\n```\n" +
+			szTestEndPrefix + szDclnPrefix + cmd + " -->\n",
+		nil
+}

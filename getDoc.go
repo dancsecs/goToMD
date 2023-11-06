@@ -54,6 +54,14 @@ func (di *docInfo) oneLine() string {
 	return res
 }
 
+func (di *docInfo) naturalComments() string {
+	res := ""
+	for _, l := range di.doc {
+		res += "// " + l + "\n"
+	}
+	return res
+}
+
 func (di *docInfo) declGoLang() string {
 	return "```go\n" +
 		strings.Join(di.header, "\n") +

@@ -29,6 +29,8 @@ const szTestBgnPrefix = szTestPrefix + "Bgn::"
 const szTestEndPrefix = szTestPrefix + "End::"
 const szDocPrefix = "doc::"
 const szTestDocPrefix = szTestPrefix + szDocPrefix
+const szDclnPrefix = "dcln::"
+const szTestDclnPrefix = szTestPrefix + szDclnPrefix
 const szDclsPrefix = "dcls::"
 const szTestDclsPrefix = szTestPrefix + szDclsPrefix
 const szDclPrefix = "dcl::"
@@ -111,6 +113,12 @@ func updateMarkDownDocument(fData string) (string, error) {
 		case strings.HasPrefix(l, szTestDclsPrefix):
 			cmd = l[len(szTestDclsPrefix) : len(l)-len(" -->")]
 			res, err = expandGoDclSingle(cmd)
+			if err == nil {
+				updatedFile += res
+			}
+		case strings.HasPrefix(l, szTestDclnPrefix):
+			cmd = l[len(szTestDclsPrefix) : len(l)-len(" -->")]
+			res, err = expandGoDclNatural(cmd)
 			if err == nil {
 				updatedFile += res
 			}

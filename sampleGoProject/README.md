@@ -290,3 +290,24 @@ func TimesTwo(i int) int
 func TimesThree(i int) int
 ```
 <!--- goToMD::End::dcls::./TimesTwo TimesThree -->
+
+or a natural declaration:
+
+<!--- goToMD::Bgn::dcln::./TimesTwo -->
+```go
+// TimesTwo returns the value times two.
+func TimesTwo(i int) int
+```
+<!--- goToMD::End::dcln::./TimesTwo -->
+
+or a multiple natural declarations:
+
+<!--- goToMD::Bgn::dcln::./TimesTwo TimesThree -->
+```go
+// TimesTwo returns the value times two.
+func TimesTwo(i int) int
+
+// TimesThree returns the value times three.
+func TimesThree(i int) int
+```
+<!--- goToMD::End::dcln::./TimesTwo TimesThree -->

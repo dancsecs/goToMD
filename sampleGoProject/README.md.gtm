@@ -51,3 +51,11 @@ or a single declaration on a single line:
 or a multiple declarations on a single line:
 
 <!--- goToMD::dcls::./TimesTwo TimesThree -->
+
+or a natural declaration:
+
+<!--- goToMD::dcln::./TimesTwo -->
+
+or a multiple natural declarations:
+
+<!--- goToMD::dcln::./TimesTwo TimesThree -->

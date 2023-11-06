@@ -156,3 +156,47 @@ func Test_ExpandGoDclSingle_TwoItems(t *testing.T) {
 			"```\n<!--- goToMD::End::dcls::./sampleGoProject/TimesTwo TimesThree -->\n",
 	)
 }
+
+func Test_ExpandGoDclNatural_InvalidItem(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	s, err := expandGoDclNatural("./sampleGoProject/unknownItem")
+	chk.Err(err, "unknown package object: unknownItem")
+	chk.Str(s, "")
+}
+
+func Test_ExpandGoDclNatural_OneItem(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	s, err := expandGoDclNatural("./sampleGoProject/TimesTwo")
+	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	chk.NoErr(err)
+	chk.Str(
+		s,
+		"<!--- goToMD::Bgn::dcln::./sampleGoProject/TimesTwo -->\n```go\n"+
+			"// TimesTwo returns the value times two.\n"+
+			"func TimesTwo(i int) int\n"+
+			"```\n<!--- goToMD::End::dcln::./sampleGoProject/TimesTwo -->\n",
+	)
+}
+
+func Test_ExpandGoDclNatural_TwoItems(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	s, err := expandGoDclNatural("./sampleGoProject/TimesTwo TimesThree")
+	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	chk.NoErr(err)
+	chk.Str(
+		s,
+		"<!--- goToMD::Bgn::dcln::./sampleGoProject/TimesTwo TimesThree -->\n```go\n"+
+			"// TimesTwo returns the value times two.\n"+
+			"func TimesTwo(i int) int\n"+
+			"\n"+
+			"// TimesThree returns the value times three.\n"+
+			"func TimesThree(i int) int\n"+
+			"```\n<!--- goToMD::End::dcln::./sampleGoProject/TimesTwo TimesThree -->\n",
+	)
+}

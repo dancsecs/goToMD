@@ -41,7 +41,7 @@ func Test_SampleGoProjectCleanNoTarget(t *testing.T) {
 		filepath.Join(dir, "README.md"),
 	})
 
-	// Nor Run the main function with no -f arg requiring confirmation
+	// Now Run the main function with target requiring confirmation
 	chk.NoPanic(main)
 
 	got, wnt, err := getTestFiles(dir, "README.md.gtm")
@@ -394,6 +394,9 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
+		"getInfo(\"TimesTwo\")",
+		"getInfo(\"TimesTwo\")",
+		"getInfo(\"TimesThree\")",
 	)
 }
 
@@ -475,6 +478,9 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 		"getInfo(\"TimesThree\")",
 		"getInfo(\"InterfaceType\")",
 		"getInfo(\"StructureType\")",
+		"getInfo(\"TimesTwo\")",
+		"getInfo(\"TimesTwo\")",
+		"getInfo(\"TimesThree\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -686,6 +692,9 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 		"getInfo(\"TimesThree\")",
 		"getInfo(\"InterfaceType\")",
 		"getInfo(\"StructureType\")",
+		"getInfo(\"TimesTwo\")",
+		"getInfo(\"TimesTwo\")",
+		"getInfo(\"TimesThree\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
