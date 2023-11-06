@@ -88,7 +88,9 @@ func Test_SampleGoProjectExpandTargetCancel(t *testing.T) {
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoPanic(main)
-	chk.Stdout("Confirm overwrite of README.md (Y to overwrite)?\\s")
+	chk.Stdout("Confirm overwrite of README.md (Y to overwrite)? " +
+		"overwrite cancelled",
+	)
 }
 
 func Test_SampleGoProjectExpandTargetOverwrite(t *testing.T) {
