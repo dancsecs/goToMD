@@ -88,6 +88,7 @@ func runTest(dir, tests string) (string, string, error) {
 			latexRes += "$\\small{\\texttt{" + line + "}}$\n<br>\n"
 		}
 		res = latexRes
+		//  res = "<---\n" + string(rawRes) + "\n -->\n\n" + latexRes
 	}
 
 	if err == nil {

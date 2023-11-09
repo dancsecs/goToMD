@@ -299,12 +299,12 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 
 	chk.Stdout(
 		"filesToProcess:  "+fName,
-		"Confirm overwrite of README.md (Y to overwrite)? "+
+		"Confirm overwrite of "+fName+" (Y to overwrite)? "+
 			"overwrite cancelled")
 
 	chk.Log(
 		"",
-		"in place replacing of README.md in dir: /tmp/Test_SampleGoProjectReplaceTargetCancel",
+		"in place replacing of "+fName,
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
@@ -368,7 +368,7 @@ func Test_SampleGoProjectReplaceTargetOverwrite(t *testing.T) {
 		"open "+fName+".gtm: no such file or directory",
 	)
 
-	chk.Stdout("Confirm overwrite of README.md (Y to overwrite)?\\s")
+	chk.Stdout("Confirm overwrite of " + fName + " (Y to overwrite)?\\s")
 }
 
 func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
@@ -415,7 +415,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
 		"open "+dir+"/README.md.gtm: no such file or directory",
 	)
 
-	chk.Stdout("Confirm overwrite of README.md (Y to overwrite)?\\s")
+	chk.Stdout("Confirm overwrite of " + dir + "/README.md (Y to overwrite)?\\s")
 }
 
 func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
@@ -469,7 +469,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
 		"open "+dir+"/README.md.gtm: no such file or directory",
 	)
 
-	chk.Stdout("Confirm overwrite of README.md (Y to overwrite)?\\s")
+	chk.Stdout("Confirm overwrite of " + dir + "/README.md (Y to overwrite)?\\s")
 }
 
 func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
@@ -514,11 +514,11 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 	pName := filepath.Join(dir, "README.md")
 	chk.Stdout(
 		"filesToProcess:  "+pName,
-		"Confirm overwrite of README.md (Y to overwrite)?\\s",
+		"Confirm overwrite of "+pName+" (Y to overwrite)?\\s",
 	)
 
 	chk.Log(
-		"in place replacing of README.md in dir: "+dir,
+		"in place replacing of "+pName,
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",

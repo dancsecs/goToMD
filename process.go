@@ -45,6 +45,32 @@ func confirmOverwrite(fPath string) (bool, error) {
 	return ok, err
 }
 
+func writeFile(fPath string, data string) error {
+	var err error
+
+	okToOverwrite := forceOverwrite
+	if !okToOverwrite {
+		okToOverwrite, err = confirmOverwrite(fPath)
+	}
+
+	if err == nil && okToOverwrite {
+		var f *os.File
+
+		//nolint:gosec // Ok.
+		f, err = os.OpenFile(fPath,
+			os.O_TRUNC|os.O_WRONLY|os.O_CREATE,
+			os.FileMode(defaultPerm),
+		)
+		if err == nil {
+			_, err = f.WriteString(strings.ReplaceAll(data, "\t", "    ") + "\n")
+			if err == nil {
+				err = f.Close()
+			}
+		}
+	}
+	return err
+}
+
 func getFilesToProcess() ([]string, error) {
 	var err error
 	var files []os.DirEntry

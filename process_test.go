@@ -2,8 +2,6 @@ package main
 
 import (
 	"os"
-	"path/filepath"
-	"strings"
 
 	"github.com/dancsecs/szTest"
 )
@@ -25,46 +23,6 @@ import (
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-func getProcessedFiles(dir, fName string) (string, string, []string, []string, error) {
-	var targetPath string
-	var sourceDir string
-	var err error
-	var gotBytes []byte
-	var wntBytes []byte
-
-	targetPath, err = filepath.Abs(filepath.Join(dir, fName))
-	if err == nil {
-		gotBytes, err = os.ReadFile(targetPath)
-	}
-	if err == nil {
-		sourceDir, err = filepath.Abs(".")
-	}
-	if err == nil {
-		wntBytes, err = os.ReadFile(fName)
-	}
-	if err != nil {
-		return "", "", nil, nil, err
-	}
-	return targetPath, sourceDir,
-		strings.Split(string(gotBytes), "\n"),
-		strings.Split(string(wntBytes), "\n"),
-		nil
-}
-
-func setupDirs(chk *szTest.Chk) {
-	chk.T().Helper()
-	origOutputDir := outputDir
-	origCWD, err := os.Getwd()
-
-	if chk.NoErr(err) {
-		outputDir = chk.CreateTmpDir()
-		chk.PushPostReleaseFunc(func() error {
-			outputDir = origOutputDir
-			return os.Chdir(origCWD)
-		})
-	}
-}
 
 func setupTest(
 	chk *szTest.Chk, tCleanOnly, tReplace, tForceOverwrite, tVerbose bool,
@@ -116,3 +74,7 @@ func setupTest(
 // |  false     |   true    |     true         |   true    |
 // |  true      |   false   |     true         |   true    |
 // +------------+-----------+------------------+-----------+.
+
+//  func Test_Process_Stop(t *testing.T) {
+//  	t.Fatal("STOPPING")
+//  }

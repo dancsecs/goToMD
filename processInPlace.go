@@ -26,22 +26,40 @@ import (
 	"strings"
 )
 
-func replaceMDInPlace(completePath string) error {
+func replaceMDInPlace(fileToRead string) error {
 	var err error
-	var absCompletePath string
 	var fName string
 	var absDir string
 	var fileBytes []byte
 	var res string
 
-	absCompletePath, err = filepath.Abs(completePath)
+	var rFile, wFile string
+
+	rFile, err = filepath.Abs(fileToRead)
 	if err == nil {
-		absDir = filepath.Dir(absCompletePath)
-		fName = filepath.Base(absCompletePath)
+		absDir, fName = filepath.Split(rFile)
+
+		if outputDir != "." { // Actual file to replace is in alternate directory.
+			wFile, err = filepath.Abs(filepath.Join(outputDir, fName))
+			if err == nil {
+				if _, statErr := os.Stat(wFile); statErr == nil {
+					// Only read alt file if it exists otherwise read named file.
+					rFile = wFile
+				}
+			}
+		} else {
+			wFile = rFile
+		}
 	}
 
 	if verbose {
-		log.Printf("in place replacing of %s in dir: %s", fName, absDir)
+		if rFile == wFile {
+			log.Printf("in place replacing of %s", rFile)
+		} else {
+			log.Printf(
+				"in place replacing (alt dir) of %s to %s", rFile, wFile,
+			)
+		}
 	}
 
 	if err == nil {
@@ -49,7 +67,7 @@ func replaceMDInPlace(completePath string) error {
 	}
 
 	if err == nil {
-		fileBytes, err = os.ReadFile(fName) //nolint:gosec // Ok.
+		fileBytes, err = os.ReadFile(rFile) //nolint:gosec // Ok.
 	}
 
 	if err == nil {
@@ -62,25 +80,8 @@ func replaceMDInPlace(completePath string) error {
 		res, err = updateMarkDownDocument(res)
 	}
 
-	okToOverwrite := forceOverwrite
-	if err == nil && !forceOverwrite {
-		okToOverwrite, err = confirmOverwrite(fName)
-	}
-
-	if err == nil && okToOverwrite {
-		var f *os.File
-
-		//nolint:gosec // Ok.
-		f, err = os.OpenFile(filepath.Join(outputDir, fName),
-			os.O_TRUNC|os.O_WRONLY|os.O_CREATE,
-			os.FileMode(defaultPerm),
-		)
-		if err == nil {
-			_, err = f.WriteString(strings.ReplaceAll(res, "\t", "    ") + "\n")
-			if err == nil {
-				err = f.Close()
-			}
-		}
+	if err == nil {
+		err = writeFile(wFile, res)
 	}
 
 	return err

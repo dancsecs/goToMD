@@ -40,9 +40,13 @@ func (di *docInfo) oneLine() string {
 	res := ""
 	switch len(di.header) {
 	case 0:
-		res = di.body[0]
-		if len(di.body) > 1 {
-			res += " ..."
+		switch len(di.body) {
+		case 0:
+			res = "UNKNOWN DECLARATION"
+		case 1:
+			res = di.body[0]
+		default:
+			res = di.body[0] + " ..."
 		}
 	case 1:
 		res = di.header[0]

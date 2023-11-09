@@ -33,6 +33,15 @@ type docInfoTest struct {
 	oneLine string
 }
 
+func Test_GetDoc_OneLine(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	dInfo := &docInfo{}
+
+	chk.Str(dInfo.oneLine(), "UNKNOWN DECLARATION")
+}
+
 func Test_GetDoc_GetInfo_InvalidDirectory(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()

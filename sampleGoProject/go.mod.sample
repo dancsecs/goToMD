@@ -1,5 +1,5 @@
-module example
+module github.com/dancsecs/goToMD/sampleGoProject
 
 go 1.18
 
-require github.com/dancsecs/szTest v0.0.0-20231016170724-491b1ab75831
+require github.com/dancsecs/szTest v0.0.0-20231106180107-0208fd3f0ab3

@@ -88,7 +88,7 @@ $\small{\texttt{PASS}}$
 <br>
 $\small{\texttt{coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
 <br>
-$\small{\texttt{ok\unicode{160}\unicode{160}    example    coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
+$\small{\texttt{ok\unicode{160}\unicode{160}    github.com/dancsecs/goToMD/sampleGoProject    coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
 <br>
 <!--- goToMD::End::tst::./Test_PASS_SampleGoProject -->
 
@@ -121,7 +121,7 @@ $\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160
 <br>
 $\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}sample\unicode{95}test.go:35:\unicode{160}Unexpected\unicode{160}stdout\unicode{160}Entry:\unicode{160}got\unicode{160}(1\unicode{160}lines)\unicode{160}-\unicode{160}want\unicode{160}(1\unicode{160}lines)}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}This\unicode{160}output\unicode{160}line\unicode{160}\color{red}is\color{default}\color{yellow}/\color{default}\color{green}will\unicode{160}be\color{default}\unicode{160}different}}$
+$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{darkturquoise}0\color{default}:\color{darkturquoise}0\color{default}\unicode{160}This\unicode{160}output\unicode{160}line\unicode{160}\color{red}is\color{default}\color{yellow}/\color{default}\color{green}will\unicode{160}be\color{default}\unicode{160}different}}$
 <br>
 $\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}sample\unicode{95}test.go:39:\unicode{160}unexpected\unicode{160}string:}}$
 <br>
@@ -135,7 +135,7 @@ $\small{\texttt{FAIL}}$
 <br>
 $\small{\texttt{coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
 <br>
-$\small{\texttt{FAIL\unicode{160}example\unicode{160}0.0s}}$
+$\small{\texttt{FAIL\unicode{160}github.com/dancsecs/goToMD/sampleGoProject\unicode{160}0.0s}}$
 <br>
 $\small{\texttt{FAIL}}$
 <br>
