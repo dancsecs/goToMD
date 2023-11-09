@@ -269,19 +269,18 @@ func (pi *packageInfo) snipFile(
 	return decl, body, nil
 }
 
-func createPackageInfo(dir string) (*packageInfo, error) {
+func createPackageInfo(dir, absDir string) (*packageInfo, error) {
 	var pkgInfo *packageInfo
 
 	// Create the AST by parsing src.
 
-	absDir, err := filepath.Abs(dir)
-	if err == nil {
-		if verbose {
-			log.Print("Loading Package info for: ", dir)
-		}
-		pkgInfo = &packageInfo{fSet: token.NewFileSet()}
+	if verbose {
+		log.Print("Loading Package info for: ", dir)
 	}
+	pkgInfo = &packageInfo{fSet: token.NewFileSet()}
+
 	var f map[string]*ast.Package
+	var err error
 	f, err = parser.ParseDir(pkgInfo.fSet, absDir, nil,
 		parser.ParseComments|parser.AllErrors,
 	)
@@ -292,7 +291,7 @@ func createPackageInfo(dir string) (*packageInfo, error) {
 			pkgInfo.docPkg = doc.New(
 				a, n, doc.PreserveAST|doc.AllDecls|doc.AllMethods,
 			)
-			packages[dir] = pkgInfo
+			packages[absDir] = pkgInfo
 			return pkgInfo, nil
 		}
 	}
@@ -300,14 +299,19 @@ func createPackageInfo(dir string) (*packageInfo, error) {
 }
 
 func getInfo(dir, name string) (*docInfo, error) {
+	var absDir string
 	var pkgInfo *packageInfo
 	var dInfo *docInfo
 	var ok bool
 	var err error
 
-	pkgInfo, ok = packages[dir]
-	if !ok {
-		pkgInfo, err = createPackageInfo(dir)
+	absDir, err = filepath.Abs(dir)
+
+	if err == nil {
+		pkgInfo, ok = packages[absDir]
+		if !ok {
+			pkgInfo, err = createPackageInfo(dir, absDir)
+		}
 	}
 
 	if err == nil {
@@ -317,8 +321,4 @@ func getInfo(dir, name string) (*docInfo, error) {
 		return dInfo, nil
 	}
 	return nil, err
-}
-
-func clearPackageCache() {
-	packages = make(map[string]*packageInfo)
 }

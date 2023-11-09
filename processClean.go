@@ -23,7 +23,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func cleanMD(completePath string) error {
@@ -59,25 +58,8 @@ func cleanMD(completePath string) error {
 		res, err = cleanMarkDownDocument(fileData)
 	}
 
-	okToOverwrite := forceOverwrite
-	if err == nil && !forceOverwrite {
-		okToOverwrite, err = confirmOverwrite(dstFile)
-	}
-
-	if err == nil && okToOverwrite {
-		var f *os.File
-
-		//nolint:gosec // Ok.
-		f, err = os.OpenFile(dstFile,
-			os.O_TRUNC|os.O_WRONLY|os.O_CREATE,
-			os.FileMode(defaultPerm),
-		)
-		if err == nil {
-			_, err = f.WriteString(strings.ReplaceAll(res, "\t", "    ") + "\n")
-			if err == nil {
-				err = f.Close()
-			}
-		}
+	if err == nil {
+		err = writeFile(dstFile, res)
 	}
 
 	return err

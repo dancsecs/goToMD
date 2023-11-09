@@ -103,9 +103,6 @@ func Test_ProcessInPlace_NoTargetNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
 	)
@@ -128,9 +125,6 @@ func Test_ProcessInPlace_NoTargetNoForceNoVerbose(t *testing.T) {
 func Test_ProcessInPlace_NoTargetForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
-	chk.FailFast(false)
 
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: false},
@@ -155,9 +149,6 @@ func Test_ProcessInPlace_NoTargetNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
 	)
@@ -177,7 +168,6 @@ func Test_ProcessInPlace_NoTargetNoForceVerbose(t *testing.T) {
 			fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md to "+
 			tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -201,9 +191,6 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: true},
 	)
@@ -223,7 +210,6 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 			fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md to "+
 			tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -246,9 +232,6 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 func Test_ProcessInPlace_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
-	chk.FailFast(false)
 
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
@@ -277,9 +260,6 @@ func Test_ProcessInPlace_CancelOverwriteForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: false},
 	)
@@ -305,9 +285,6 @@ func Test_ProcessInPlace_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
 	)
@@ -327,7 +304,6 @@ func Test_ProcessInPlace_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk.Log(
 		"in place replacing of "+
 			tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -353,9 +329,6 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: true},
 	)
@@ -375,7 +348,6 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.Log(
 		"in place replacing of "+
 			tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -398,9 +370,6 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 func Test_ProcessInPlace_OverwriteNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
-	chk.FailFast(false)
 
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
@@ -429,9 +398,6 @@ func Test_ProcessInPlace_OverwriteForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: false},
 	)
@@ -457,9 +423,6 @@ func Test_ProcessInPlace_OverwriteNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
 	)
@@ -479,7 +442,6 @@ func Test_ProcessInPlace_OverwriteNoForceVerbose(t *testing.T) {
 	chk.Log(
 		"in place replacing of "+
 			tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -505,9 +467,6 @@ func Test_ProcessInPlace_OverwriteForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: true},
 	)
@@ -527,7 +486,6 @@ func Test_ProcessInPlace_OverwriteForceVerbose(t *testing.T) {
 	chk.Log(
 		"in place replacing of "+
 			tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",

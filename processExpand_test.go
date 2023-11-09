@@ -103,9 +103,6 @@ func Test_ProcessExpand_NoTargetNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
 	)
@@ -128,9 +125,6 @@ func Test_ProcessExpand_NoTargetNoForceNoVerbose(t *testing.T) {
 func Test_ProcessExpand_NoTargetForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
-	chk.FailFast(false)
 
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: false},
@@ -155,9 +149,6 @@ func Test_ProcessExpand_NoTargetNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: true},
 	)
@@ -175,7 +166,6 @@ func Test_ProcessExpand_NoTargetNoForceVerbose(t *testing.T) {
 	chk.Log(
 		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md.gtm to: "+tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -199,9 +189,6 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: true},
 	)
@@ -219,7 +206,6 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 	chk.Log(
 		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md.gtm to: "+tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -242,9 +228,6 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 func Test_ProcessExpand_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
-	chk.FailFast(false)
 
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
@@ -273,9 +256,6 @@ func Test_ProcessExpand_CancelOverwriteTargetForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: false},
 	)
@@ -301,9 +281,6 @@ func Test_ProcessExpand_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: true},
 	)
@@ -323,7 +300,6 @@ func Test_ProcessExpand_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk.Log(
 		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md.gtm to: "+tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -349,9 +325,6 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: true},
 	)
@@ -371,7 +344,6 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.Log(
 		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md.gtm to: "+tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -394,9 +366,6 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 func Test_ProcessExpand_OverwriteNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
-	chk.FailFast(false)
 
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
@@ -425,9 +394,6 @@ func Test_ProcessExpand_OverwriteTargetForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: false},
 	)
@@ -453,9 +419,6 @@ func Test_ProcessExpand_OverwriteNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: true},
 	)
@@ -475,7 +438,6 @@ func Test_ProcessExpand_OverwriteNoForceVerbose(t *testing.T) {
 	chk.Log(
 		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md.gtm to: "+tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -501,9 +463,6 @@ func Test_ProcessExpand_OverwriteForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-	chk.FailFast(false)
-
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: true},
 	)
@@ -523,7 +482,6 @@ func Test_ProcessExpand_OverwriteForceVerbose(t *testing.T) {
 	chk.Log(
 		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
 			"README.md.gtm to: "+tFile,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",

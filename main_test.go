@@ -61,8 +61,6 @@ func Test_SampleGoProjectExpandTargetCancel(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
 		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
@@ -96,8 +94,6 @@ func Test_SampleGoProjectExpandTargetCancel(t *testing.T) {
 func Test_SampleGoProjectExpandTargetOverwrite(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
 
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
@@ -136,8 +132,6 @@ func Test_SampleGoProjectExpandTargetOverwriteDir(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
 		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
@@ -174,8 +168,6 @@ func Test_SampleGoProjectExpandTargetOverwriteDir(t *testing.T) {
 func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
 
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
@@ -266,8 +258,6 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
 		setup(dir, "README.md", "sample_test.go", "sample.go"),
@@ -327,8 +317,6 @@ func Test_SampleGoProjectReplaceTargetOverwrite(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
 		setup(dir, "README.md", "sample_test.go", "sample.go"),
@@ -375,8 +363,6 @@ func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
-	clearPackageCache()
-
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
 		setup(dir, "README.md", "sample_test.go", "sample.go"),
@@ -421,8 +407,6 @@ func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
 func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
 
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
@@ -475,8 +459,6 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
 func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
-
-	clearPackageCache()
 
 	dir := chk.CreateTmpDir()
 	chk.NoErr(
