@@ -214,7 +214,7 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 		"Confirm overwrite of README.md (Y to overwrite)?\\s",
 	)
 
-	chk.Log("Expanding README.md.gtm to: README.md in dir: "+dir,
+	chk.Log("Expanding "+pName+" to: README.md",
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",

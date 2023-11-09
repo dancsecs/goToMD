@@ -23,7 +23,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func expandMD(cleanPath string) error {
@@ -38,11 +37,11 @@ func expandMD(cleanPath string) error {
 	if err == nil {
 		absDir = filepath.Dir(absCleanPath)
 		srcFile = filepath.Base(absCleanPath)
-		dstFile = srcFile[:len(srcFile)-len(".gtm")]
+		dstFile = filepath.Join(outputDir, srcFile[:len(srcFile)-len(".gtm")])
 	}
 
 	if verbose {
-		log.Printf("Expanding %s to: %s in dir: %s", srcFile, dstFile, absDir)
+		log.Printf("Expanding %s to: %s", absCleanPath, dstFile)
 	}
 
 	if err == nil {
@@ -58,25 +57,8 @@ func expandMD(cleanPath string) error {
 		res, err = updateMarkDownDocument(fileData)
 	}
 
-	okToOverwrite := forceOverwrite
-	if err == nil && !forceOverwrite {
-		okToOverwrite, err = confirmOverwrite(dstFile)
-	}
-
-	if err == nil && okToOverwrite {
-		var f *os.File
-
-		//nolint:gosec // Ok.
-		f, err = os.OpenFile(filepath.Join(outputDir, dstFile),
-			os.O_TRUNC|os.O_WRONLY|os.O_CREATE,
-			os.FileMode(defaultPerm),
-		)
-		if err == nil {
-			_, err = f.WriteString(strings.ReplaceAll(res, "\t", "    ") + "\n")
-			if err == nil {
-				err = f.Close()
-			}
-		}
+	if err == nil {
+		err = writeFile(dstFile, res)
 	}
 
 	return err
