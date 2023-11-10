@@ -93,6 +93,8 @@ func updateMarkDownDocument(fData string) (string, error) {
 	for i, mi := 0, len(lines)-1; i < mi && err == nil; i++ {
 		l := strings.TrimRight(lines[i], " ")
 		switch {
+		case !strings.HasPrefix(l, szTestPrefix):
+			updatedFile += l + "\n"
 		case strings.HasPrefix(l, szTestDocPrefix):
 			cmd = l[len(szTestDocPrefix) : len(l)-len(" -->")]
 			var dir, action string
@@ -135,7 +137,7 @@ func updateMarkDownDocument(fData string) (string, error) {
 				updatedFile += res
 			}
 		default:
-			updatedFile += l + "\n"
+			err = errors.New("unknown cmd: " + l)
 		}
 	}
 	if err != nil {

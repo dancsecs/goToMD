@@ -69,3 +69,18 @@ func Test_UpdateMarkDownDocument(t *testing.T) {
 	)
 	chk.Str(md, "")
 }
+
+func Test_UpdateMarkDown_InvalidCommand(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	md, err := updateMarkDownDocument(
+		szTestPrefix + "unknownCommand -->\n",
+	)
+
+	chk.Err(
+		err,
+		"unknown cmd: <!--- goToMD::unknownCommand -->",
+	)
+	chk.Str(md, "")
+}
