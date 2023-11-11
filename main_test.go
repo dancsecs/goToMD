@@ -478,8 +478,8 @@ func Test_SampleGoProject_CpuProfile(t *testing.T) {
 		"programName",
 		"-f",
 		"-o", altDir,
-		"-u", pprofFilePath,
-		"-U", "2",
+		"-U", pprofFilePath,
+		"-u", "2",
 		filepath.Join(dir, "README.md.gtm"),
 	})
 

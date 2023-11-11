@@ -72,7 +72,7 @@ func captureFlagDefaults() string {
 
 func processArgs() {
 	flag.BoolVar(&verbose, "v", false,
-		"Provide more information woth respect to processing.",
+		"Provide more information when processing.",
 	)
 	flag.BoolVar(&cleanOnly, "c", false,
 		"Reverse operation and remove generated markdown "+

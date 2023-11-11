@@ -33,7 +33,7 @@ The flags are:
     -u  uint
         Number of iterations to run when collecting cpu profile information.
     -v
-        Provide more information woth respect to processing.
+        Provide more information when processing.
 
 Directives are placed into the ```*.md.gtm``` file (or directly into the
 ```*.md``` document if the replace in place option is given.  These directves
