@@ -66,7 +66,7 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 	fmt.Fprintln(w, "Y")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
+	main()
 
 	got, wnt, err := getTestFiles(dir, "README.md")
 	chk.NoErr(err)
@@ -78,7 +78,8 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 		"Confirm overwrite of README.md (Y to overwrite)?\\s",
 	)
 
-	chk.Log("Expanding "+pName+" to: README.md",
+	chk.Log(
+		"Expanding "+pName+" to: README.md",
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
@@ -157,7 +158,7 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 	fmt.Fprintln(w, "N")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
+	main()
 
 	chk.Stdout(
 		"filesToProcess:  "+fName,
@@ -215,7 +216,7 @@ func Test_SampleGoProjectReplaceTargetOverwrite(t *testing.T) {
 	fmt.Fprintln(w, "Y")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
+	main()
 
 	got, wnt, err := getTestFiles(dir, "README.md")
 	chk.NoErr(err)
@@ -260,7 +261,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
 	fmt.Fprintln(w, "Y")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
+	main()
 
 	got, wnt, err := getTestFiles(dir, "README.md")
 	chk.NoErr(err)
@@ -312,7 +313,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
 	fmt.Fprintln(w, "Y")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
+	main()
 
 	got, wnt, err := getTestFiles(dir, "README.md")
 	chk.NoErr(err)
@@ -358,7 +359,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 	fmt.Fprintln(w, "Y")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoPanic(main)
+	main()
 
 	got, wnt, err := getTestFiles(dir, "README.md")
 	chk.NoErr(err)
@@ -445,7 +446,7 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 	})
 
 	// Nor Run the main function with no -f arg requiring confirmation
-	chk.NoPanic(main)
+	main()
 
 	got, wnt, err := getTestFiles(altDir, "README.md.gtm")
 	chk.NoErr(err)
@@ -460,4 +461,39 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 	chk.Log(
 		"Cleaning README.md to: " + oName + " in dir: " + dir,
 	)
+}
+
+func Test_SampleGoProject_CpuProfile(t *testing.T) {
+	chk := szTest.CaptureLogAndStdout(t)
+	defer chk.Release()
+
+	dir := chk.CreateTmpDir()
+	altDir := chk.CreateTmpSubDir("altDir")
+
+	pprofFilePath := filepath.Join(dir, "goToMD.pprof")
+
+	chk.NoErr(setup(dir, "README.md.gtm", "sample_test.go", "sample.go"))
+
+	chk.SetupArgsAndFlags([]string{
+		"programName",
+		"-f",
+		"-o", altDir,
+		"-u", pprofFilePath,
+		"-U", "2",
+		filepath.Join(dir, "README.md.gtm"),
+	})
+
+	// Nor Run the main function with no -f arg requiring confirmation
+	main()
+
+	got, wnt, err := getTestFiles(altDir, "README.md")
+	chk.NoErr(err)
+	chk.StrSlice(got, wnt)
+
+	ppStat, err := os.Stat(pprofFilePath)
+	chk.NoErr(err)
+	chk.False(ppStat.IsDir())
+
+	chk.Stdout()
+	chk.Log()
 }

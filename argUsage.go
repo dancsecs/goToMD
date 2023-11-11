@@ -25,22 +25,35 @@ import (
 	"strings"
 )
 
+const defaultCpuProfileIterations = uint(5)
+const defaultPermissions = 0644
+
 //nolint:goCheckNoGlobals // Ok.
 var (
-	cleanOnly      = false
-	forceOverwrite = false
-	replace        = false
-	verbose        = false
-	outputDir      = "."
-	defaultPerm    = 0744
-	showLicense    = false
+	cleanOnly            = false
+	forceOverwrite       = false
+	replace              = false
+	verbose              = false
+	outputDir            = "."
+	defaultPerm          = defaultPermissions
+	showLicense          = false
+	cpuProfile           = ""
+	cpuProfileIterations = defaultCpuProfileIterations
 )
 
 func usage() {
 	cmdName := os.Args[0]
 	fmt.Fprint(flag.CommandLine.Output(),
 		"Usage of ", cmdName,
-		" [-c | -r] [-fv] [-p perm] [-o outDir] file|dir [file|dir...]\n",
+		" [-c | -r]"+
+			" [-fv]"+
+			" [-p perm]"+
+			" [-o outDir]"+
+			" [-u file]"+
+			" [-U int]"+
+			" file|dir"+
+			" [file|dir...]"+
+			"\n",
 	)
 	flag.PrintDefaults()
 }
@@ -77,9 +90,15 @@ func processArgs() {
 	flag.StringVar(&outputDir, "o", ".",
 		"Direct all output to the specified directory.",
 	)
-	const defaultPermissions = 0644
 	flag.IntVar(&defaultPerm, "p", defaultPermissions,
 		"Permissions to use when creating new file (can only set RW bits).",
+	)
+	flag.StringVar(&cpuProfile, "u", "",
+		"Collect cpu profile data into named file.",
+	)
+
+	flag.UintVar(&cpuProfileIterations, "U", defaultCpuProfileIterations,
+		"Number of iterations to run when collecting cpu profile information.",
 	)
 
 	flag.CommandLine.Usage = usage

@@ -1,4 +1,4 @@
-//nolint:goDot // Ok.
+//nolint:goDot,lll // Ok.
 /*
 The goToMD utility provides for the maintenance of github README.MD style
 pages by permitting go files, go documentation and go test output to be
@@ -9,7 +9,7 @@ code.)
 It can use a template file (```*.md.gtm```) or can maintain a ```*.md``` file
 in place.
 
-Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] path [path...]
+Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] [-u file] [-U uint] path [path...]
 
 The flags are:
 
@@ -28,6 +28,10 @@ The flags are:
         bits). (default 420)
     -r
         Replace the *.MD in place (Cannot be used with the -c flag).
+    -u  string
+        Collect cpu profile data into named file.
+    -U  uint
+        Number of iterations to run when collecting cpu profile information.
     -v
         Provide more information woth respect to processing.
 
@@ -95,6 +99,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime/pprof"
 )
 
 const license = `
@@ -115,10 +120,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 `
 
+const defaultProfileIterations = 25
+
 func main() {
 	var err error
 	var origWd string
 	var filesToProcess []string
+	var profileIterations int
 
 	// Restore original working directory on exit.
 	origWd, err = os.Getwd()
@@ -130,22 +138,35 @@ func main() {
 
 	processArgs()
 
-	filesToProcess, err = getFilesToProcess()
-
-	for i, mi := 0, len(filesToProcess); i < mi && err == nil; i++ {
-		err = os.Chdir(origWd)
+	if cpuProfile != "" {
+		f, err := os.Create(cpuProfile)
 		if err == nil {
-			switch {
-			case cleanOnly:
-				err = cleanMD(filesToProcess[i])
-			case replace:
-				err = replaceMDInPlace(filesToProcess[i])
-			default:
-				err = expandMD(filesToProcess[i])
+			err = pprof.StartCPUProfile(f)
+			if err == nil {
+				defer pprof.StopCPUProfile()
+				profileIterations = defaultProfileIterations
 			}
 		}
 	}
 
+	filesToProcess, err = getFilesToProcess()
+
+	for ; profileIterations >= 0; profileIterations-- {
+		for i, mi := 0, len(filesToProcess); i < mi && err == nil; i++ {
+			err = os.Chdir(origWd)
+			if err == nil {
+				switch {
+				case cleanOnly:
+					//   err = cleanMD(filesToProcess[i])
+					err = cleanMD(filesToProcess[i])
+				case replace:
+					err = replaceMDInPlace(filesToProcess[i])
+				default:
+					err = expandMD(filesToProcess[i])
+				}
+			}
+		}
+	}
 	if showLicense {
 		fmt.Print(license)
 	}
