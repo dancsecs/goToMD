@@ -16,7 +16,7 @@ code.)
 It can use a template file (```*.md.gtm```) or can maintain a ```*.md``` file
 in place.
 
-Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] path [path...]
+Usage of goToMD [-c | -r] [-fvl] [-p perm] [-o outDir] [-U file] [-u uint] path [path...]
 
 The flags are:
 
@@ -35,8 +35,12 @@ The flags are:
         bits). (default 420)
     -r
         Replace the *.MD in place (Cannot be used with the -c flag).
+    -U  string
+        Collect cpu profile data into named file.
+    -u  uint
+        Number of iterations to run when collecting cpu profile information.
     -v
-        Provide more information woth respect to processing.
+        Provide more information when processing.
 
 Directives are placed into the ```*.md.gtm``` file (or directly into the
 ```*.md``` document if the replace in place option is given.  These directves
