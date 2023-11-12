@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/fs"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -41,39 +40,20 @@ func setupInPlaceGlobals(
 	setupTest(chk, true, false, override.forceOverwrite, override.verbose)
 }
 
-func setupInPlaceDirs(makeTarget bool) (string, func(), error) {
+func setupInPlaceDirs(makeTarget bool) error {
 	const fName = "README.md"
+	var err error
 	var tFile string
 	var fData []byte
 
-	// Save state to restore when returned function is called.
-	origOutputDir := outputDir
-	origCWD, err := os.Getwd()
-
-	if err != nil {
-		return "", nil, err
-	}
-
-	restoreFunction := func() {
-		outputDir = origOutputDir
-		err := os.Chdir(origCWD)
-		if err != nil {
-			log.Printf("Could not retore original working directory.")
-		}
-	}
-
 	if makeTarget {
 		fData, err = os.ReadFile(filepath.Join(sampleGoProjectPath, fName))
-		if err != nil {
-			return "", nil, err
-		}
-		tFile = filepath.Join(outputDir, fName)
-		err = os.WriteFile(tFile, fData, fs.FileMode(defaultPerm))
-		if err != nil {
-			return "", nil, err
+		if err == nil {
+			tFile = filepath.Join(outputDir, fName)
+			err = os.WriteFile(tFile, fData, fs.FileMode(defaultPerm))
 		}
 	}
-	return tFile, restoreFunction, nil
+	return err
 }
 
 func getInPlaceFiles() (string, []string, []string, error) {
@@ -104,12 +84,9 @@ func Test_ProcessInPlace_NoTargetNoForceNoVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
 	)
-	_, cFunc, err := setupInPlaceDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(false))
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -127,12 +104,9 @@ func Test_ProcessInPlace_NoTargetForceNoVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: false},
 	)
-	_, cFunc, err := setupInPlaceDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(false))
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -150,12 +124,9 @@ func Test_ProcessInPlace_NoTargetNoForceVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
 	)
-	_, cFunc, err := setupInPlaceDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(false))
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -189,12 +160,9 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: true},
 	)
-	_, cFunc, err := setupInPlaceDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(false))
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -228,14 +196,11 @@ func Test_ProcessInPlace_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -255,14 +220,11 @@ func Test_ProcessInPlace_CancelOverwriteForceNoVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: false},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -280,14 +242,11 @@ func Test_ProcessInPlace_CancelOverwriteNoForceVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -323,14 +282,11 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: true},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -364,14 +320,11 @@ func Test_ProcessInPlace_OverwriteNoForceNoVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -391,14 +344,11 @@ func Test_ProcessInPlace_OverwriteForceNoVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: false},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -416,14 +366,11 @@ func Test_ProcessInPlace_OverwriteNoForceVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -459,14 +406,11 @@ func Test_ProcessInPlace_OverwriteForceVerbose(t *testing.T) {
 	setupInPlaceGlobals(
 		chk, inPlaceGlobals{forceOverwrite: true, verbose: true},
 	)
-	_, cFunc, err := setupInPlaceDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupInPlaceDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = replaceMDInPlace(sampleGoProjectPath + "README.md")
-	chk.NoErr(err)
+	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)

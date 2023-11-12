@@ -54,27 +54,15 @@ func getCleanedFiles() (string, []string, []string, error) {
 		nil
 }
 
-func setupCleanDirs(chk *szTest.Chk, makeTarget bool) string {
+func setupCleanDirs(makeTarget bool) error {
 	const fName = "README.md.gtm"
-	var tFile string
+	var err error
 
-	chk.T().Helper()
-	origOutputDir := outputDir
-	origCWD, err := os.Getwd()
-
-	if chk.NoErr(err) {
-		outputDir = chk.CreateTmpDir()
-		chk.PushPostReleaseFunc(func() error {
-			outputDir = origOutputDir
-			return os.Chdir(origCWD)
-		})
-		if makeTarget {
-			tFile = filepath.Join(outputDir, fName)
-			err = os.WriteFile(tFile, nil, fs.FileMode(defaultPerm))
-			chk.NoErr(err, "could not create empty target to be replaced")
-		}
+	if makeTarget {
+		tFile := filepath.Join(outputDir, fName)
+		err = os.WriteFile(tFile, nil, fs.FileMode(defaultPerm))
 	}
-	return tFile
+	return err
 }
 
 func setupCleanGlobals(
@@ -111,11 +99,9 @@ func Test_ProcessClean_NoTargetNoForceNoVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: false})
-	setupCleanDirs(chk, false)
+	chk.NoErr(setupCleanDirs(false))
 
-	chk.NoErr(
-		cleanMD(sampleGoProjectPath + "README.md"),
-	)
+	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -129,11 +115,9 @@ func Test_ProcessClean_NoTargetForceNoVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: false})
-	setupCleanDirs(chk, false)
+	chk.NoErr(setupCleanDirs(false))
 
-	chk.NoErr(
-		cleanMD(sampleGoProjectPath + "README.md"),
-	)
+	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -147,7 +131,7 @@ func Test_ProcessClean_NoTargetNoForceVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: true})
-	setupCleanDirs(chk, false)
+	chk.NoErr(setupCleanDirs(false))
 
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
@@ -163,7 +147,7 @@ func Test_ProcessClean_NoTargetForceVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: true})
-	setupCleanDirs(chk, false)
+	chk.NoErr(setupCleanDirs(false))
 
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
@@ -179,13 +163,14 @@ func Test_ProcessClean_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: false})
-	tFile := setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	chk.SetStdinData("N\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
+	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)? " +
 		"overwrite cancelled",
 	)
@@ -198,7 +183,7 @@ func Test_ProcessClean_CancelOverwriteForceNoVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: false})
-	_ = setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
@@ -213,13 +198,14 @@ func Test_ProcessClean_CancelOverwriteNoForceVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: true})
-	tFile := setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	chk.SetStdinData("N\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
+	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)? " +
 		"overwrite cancelled",
 	)
@@ -232,13 +218,14 @@ func Test_ProcessClean_CancelOverwriteForceVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: true})
-	tFile := setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
 
 	chk.Stdout()
 
+	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
 }
 
@@ -247,7 +234,7 @@ func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: false})
-	tFile := setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	chk.SetStdinData("Y\n")
 
@@ -258,6 +245,7 @@ func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
+	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)?\\s")
 
 	chk.Log()
@@ -268,7 +256,7 @@ func Test_ProcessCLean_OverwriteForceNoVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: false})
-	_ = setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
@@ -287,7 +275,7 @@ func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: true})
-	tFile := setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	chk.SetStdinData("Y\n")
 
@@ -298,6 +286,7 @@ func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
+	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)?\\s")
 
 	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
@@ -308,7 +297,7 @@ func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
 	defer chk.Release()
 
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: true})
-	tFile := setupCleanDirs(chk, true)
+	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
 	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
@@ -319,5 +308,6 @@ func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
 
 	chk.Stdout()
 
+	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
 }

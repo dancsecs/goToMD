@@ -19,7 +19,6 @@ package main
 */
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -46,18 +45,7 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 		dir,
 	})
 
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
+	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	main()
@@ -139,18 +127,7 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 		fName,
 	})
 
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "N")
+	chk.SetStdinData("N\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	main()
@@ -196,18 +173,7 @@ func Test_SampleGoProjectReplaceTargetOverwrite(t *testing.T) {
 		fName,
 	})
 
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
+	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	main()
@@ -241,18 +207,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
 		dir,
 	})
 
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
+	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	main()
@@ -293,18 +248,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
 		dir,
 	})
 
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
+	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	main()
@@ -339,18 +283,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 		dir,
 	})
 
-	// Setup a N to be read from os.Stdin by main() for conformation to overwrite
-	// the file.
-	origStdin := os.Stdin
-	defer func() {
-		os.Stdin = origStdin
-	}()
-
-	r, w, err := os.Pipe()
-	chk.NoErr(err)
-	os.Stdin = r
-
-	fmt.Fprintln(w, "Y")
+	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
 	main()

@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/fs"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -41,39 +40,20 @@ func setupExpandGlobals(
 	setupTest(chk, true, false, override.forceOverwrite, override.verbose)
 }
 
-func setupExpandDirs(makeTarget bool) (string, func(), error) {
+func setupExpandDirs(makeTarget bool) error {
 	const fName = "README.md"
+	var err error
 	var tFile string
 	var fData []byte
 
-	// Save state to restore when returned function is called.
-	origOutputDir := outputDir
-	origCWD, err := os.Getwd()
-
-	if err != nil {
-		return "", nil, err
-	}
-
-	restoreFunction := func() {
-		outputDir = origOutputDir
-		err := os.Chdir(origCWD)
-		if err != nil {
-			log.Printf("Could not retore original working directory.")
-		}
-	}
-
 	if makeTarget {
 		fData, err = os.ReadFile(filepath.Join(sampleGoProjectPath, fName))
-		if err != nil {
-			return "", nil, err
-		}
-		tFile = filepath.Join(outputDir, fName)
-		err = os.WriteFile(tFile, fData, fs.FileMode(defaultPerm))
-		if err != nil {
-			return "", nil, err
+		if err == nil {
+			tFile = filepath.Join(outputDir, fName)
+			err = os.WriteFile(tFile, fData, fs.FileMode(defaultPerm))
 		}
 	}
-	return tFile, restoreFunction, nil
+	return err
 }
 
 func getExpandFiles() (string, []string, []string, error) {
@@ -105,12 +85,9 @@ func Test_ProcessExpand_NoTargetNoForceNoVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
 	)
-	_, cFunc, err := setupExpandDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(false))
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -128,12 +105,9 @@ func Test_ProcessExpand_NoTargetForceNoVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: false},
 	)
-	_, cFunc, err := setupExpandDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(false))
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -151,12 +125,9 @@ func Test_ProcessExpand_NoTargetNoForceVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: true},
 	)
-	_, cFunc, err := setupExpandDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(false))
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -190,12 +161,9 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: true},
 	)
-	_, cFunc, err := setupExpandDirs(false)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(false))
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -229,14 +197,11 @@ func Test_ProcessExpand_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -256,14 +221,11 @@ func Test_ProcessExpand_CancelOverwriteTargetForceNoVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: false},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -281,14 +243,11 @@ func Test_ProcessExpand_CancelOverwriteNoForceVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: true},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -324,14 +283,11 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: true},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("N\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -365,14 +321,11 @@ func Test_ProcessExpand_OverwriteNoForceNoVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -392,14 +345,11 @@ func Test_ProcessExpand_OverwriteTargetForceNoVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: false},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -417,14 +367,11 @@ func Test_ProcessExpand_OverwriteNoForceVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: true},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -460,21 +407,18 @@ func Test_ProcessExpand_OverwriteForceVerbose(t *testing.T) {
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: true, verbose: true},
 	)
-	_, cFunc, err := setupExpandDirs(true)
-	chk.NoErr(err)
-	defer cFunc()
+	chk.NoErr(setupExpandDirs(true))
 
 	chk.SetStdinData("Y\n")
 
-	err = expandMD(sampleGoProjectPath + "README.md.gtm")
-	chk.NoErr(err)
+	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
 
-	tFile, got, wnt, err := getExpandFiles()
+	wFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+wFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
