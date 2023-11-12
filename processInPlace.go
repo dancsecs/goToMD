@@ -26,48 +26,28 @@ import (
 	"strings"
 )
 
-func replaceMDInPlace(fileToRead string) error {
+func replaceMDInPlace(rPath string) error {
 	var err error
-	var fName string
-	var absDir string
+	var rDir, rFile string
+	var wDir, wFile string
+	var wPath string
 	var fileBytes []byte
 	var res string
 
-	var rFile, wFile string
+	rDir, rFile = filepath.Split(rPath)
+	wDir = rDir
+	if outputDir != "." {
+		wDir = outputDir
+	}
+	wFile = rFile
+	wPath = filepath.Join(wDir, wFile)
 
-	rFile, err = filepath.Abs(fileToRead)
 	if err == nil {
-		absDir, fName = filepath.Split(rFile)
-
-		if outputDir != "." { // Actual file to replace is in alternate directory.
-			wFile, err = filepath.Abs(filepath.Join(outputDir, fName))
-			if err == nil {
-				if _, statErr := os.Stat(wFile); statErr == nil {
-					// Only read alt file if it exists otherwise read named file.
-					rFile = wFile
-				}
-			}
-		} else {
-			wFile = rFile
-		}
+		fileBytes, err = os.ReadFile(rPath) //nolint:gosec // Ok.
 	}
 
 	if verbose {
-		if rFile == wFile {
-			log.Printf("in place replacing of %s", rFile)
-		} else {
-			log.Printf(
-				"in place replacing (alt dir) of %s to %s", rFile, wFile,
-			)
-		}
-	}
-
-	if err == nil {
-		err = os.Chdir(absDir)
-	}
-
-	if err == nil {
-		fileBytes, err = os.ReadFile(rFile) //nolint:gosec // Ok.
+		log.Printf("Expanding %s <inPlace> to: %s", rPath, wPath)
 	}
 
 	if err == nil {
@@ -77,11 +57,11 @@ func replaceMDInPlace(fileToRead string) error {
 
 	if err == nil {
 		res = strings.TrimRight(res, "\n")
-		res, err = updateMarkDownDocument(res)
+		res, err = updateMarkDownDocument(rDir, res)
 	}
 
 	if err == nil {
-		err = writeFile(wFile, res)
+		err = writeFile(wPath, res)
 	}
 
 	return err

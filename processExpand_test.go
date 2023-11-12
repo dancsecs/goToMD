@@ -83,12 +83,11 @@ func getExpandFiles() (string, []string, []string, error) {
 	var gotBytes []byte
 	var wntBytes []byte
 
-	targetPath, err = filepath.Abs(filepath.Join(outputDir, fName))
+	targetPath = filepath.Join(outputDir, fName)
+	gotBytes, err = os.ReadFile(targetPath)
+
 	if err == nil {
-		gotBytes, err = os.ReadFile(targetPath)
-	}
-	if err == nil {
-		wntBytes, err = os.ReadFile(fName)
+		wntBytes, err = os.ReadFile(sampleGoProjectPath + fName)
 	}
 	if err != nil {
 		return "", nil, nil, err
@@ -164,8 +163,7 @@ func Test_ProcessExpand_NoTargetNoForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -204,8 +202,7 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -298,8 +295,7 @@ func Test_ProcessExpand_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -342,8 +338,7 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -436,8 +431,7 @@ func Test_ProcessExpand_OverwriteNoForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -480,8 +474,7 @@ func Test_ProcessExpand_OverwriteForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",

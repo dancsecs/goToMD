@@ -20,6 +20,7 @@ package main
 
 import (
 	"errors"
+	"os"
 	"strings"
 )
 
@@ -79,11 +80,25 @@ func cleanMarkDownDocument(fData string) (string, error) {
 }
 
 //nolint:funlen // Ok.
-func updateMarkDownDocument(fData string) (string, error) {
+func updateMarkDownDocument(dir, fData string) (string, error) {
+	const skipDirBlank = ""
+	const skipDirThis = "."
+	const skipDirThisDir = skipDirThis + string(os.PathSeparator)
+
 	var res string
 	var cmd string
 	var err error
 
+	if !(dir == skipDirBlank || dir == skipDirThis || dir == skipDirThisDir) {
+		var cwd string
+		cwd, err = os.Getwd()
+		if err == nil {
+			defer func() {
+				_ = os.Chdir(cwd)
+			}()
+			err = os.Chdir(dir)
+		}
+	}
 	updatedFile := szAutoPrefix + " See github.com/dancsecs/goToMD "
 	if !replace {
 		updatedFile += "** DO NOT MODIFY ** "

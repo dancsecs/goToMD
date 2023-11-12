@@ -59,8 +59,8 @@ func Test_UpdateMarkDownDocument(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	md, err := updateMarkDownDocument(
-		szTestPrefix + szDocPrefix + "./INVALID_ROOT_DIRECTORY/action1 -->\n",
+	md, err := updateMarkDownDocument("",
+		szTestPrefix+szDocPrefix+"./INVALID_ROOT_DIRECTORY/action1 -->\n",
 	)
 
 	chk.Err(
@@ -74,8 +74,8 @@ func Test_UpdateMarkDown_InvalidCommand(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	md, err := updateMarkDownDocument(
-		szTestPrefix + "unknownCommand -->\n",
+	md, err := updateMarkDownDocument("",
+		szTestPrefix+"unknownCommand -->\n",
 	)
 
 	chk.Err(

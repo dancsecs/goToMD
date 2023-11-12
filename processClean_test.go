@@ -40,12 +40,10 @@ func getCleanedFiles() (string, []string, []string, error) {
 	var gotBytes []byte
 	var wntBytes []byte
 
-	targetPath, err = filepath.Abs(filepath.Join(outputDir, fName))
+	targetPath = filepath.Join(outputDir, fName)
+	gotBytes, err = os.ReadFile(targetPath)
 	if err == nil {
-		gotBytes, err = os.ReadFile(targetPath)
-	}
-	if err == nil {
-		wntBytes, err = os.ReadFile(fName)
+		wntBytes, err = os.ReadFile(sampleGoProjectPath + fName)
 	}
 	if err != nil {
 		return "", nil, nil, err
@@ -157,9 +155,7 @@ func Test_ProcessClean_NoTargetNoForceVerbose(t *testing.T) {
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
-	chk.Log(
-		"Cleaning README.md to: " + tPath + " in dir: " + fullSampleGoProjectPath,
-	)
+	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tPath)
 }
 
 func Test_ProcessClean_NoTargetForceVerbose(t *testing.T) {
@@ -175,9 +171,7 @@ func Test_ProcessClean_NoTargetForceVerbose(t *testing.T) {
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
-	chk.Log(
-		"Cleaning README.md to: " + tPath + " in dir: " + fullSampleGoProjectPath,
-	)
+	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tPath)
 }
 
 func Test_ProcessClean_CancelOverwriteNoForceNoVerbose(t *testing.T) {
@@ -230,12 +224,7 @@ func Test_ProcessClean_CancelOverwriteNoForceVerbose(t *testing.T) {
 		"overwrite cancelled",
 	)
 
-	chk.Log(
-		"Cleaning README.md to: " +
-			tFile +
-			" in dir: " +
-			fullSampleGoProjectPath,
-	)
+	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
 }
 
 func Test_ProcessClean_CancelOverwriteForceVerbose(t *testing.T) {
@@ -250,12 +239,7 @@ func Test_ProcessClean_CancelOverwriteForceVerbose(t *testing.T) {
 
 	chk.Stdout()
 
-	chk.Log(
-		"Cleaning README.md to: " +
-			tFile +
-			" in dir: " +
-			fullSampleGoProjectPath,
-	)
+	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
 }
 
 func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
@@ -316,12 +300,7 @@ func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
 
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)?\\s")
 
-	chk.Log(
-		"Cleaning README.md to: " +
-			tFile +
-			" in dir: " +
-			fullSampleGoProjectPath,
-	)
+	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
 }
 
 func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
@@ -340,10 +319,5 @@ func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
 
 	chk.Stdout()
 
-	chk.Log(
-		"Cleaning README.md to: " +
-			tFile +
-			" in dir: " +
-			fullSampleGoProjectPath,
-	)
+	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
 }

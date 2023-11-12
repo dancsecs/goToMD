@@ -83,12 +83,10 @@ func getInPlaceFiles() (string, []string, []string, error) {
 	var gotBytes []byte
 	var wntBytes []byte
 
-	targetPath, err = filepath.Abs(filepath.Join(outputDir, fName))
+	targetPath = filepath.Join(outputDir, fName)
+	gotBytes, err = os.ReadFile(targetPath)
 	if err == nil {
-		gotBytes, err = os.ReadFile(targetPath)
-	}
-	if err == nil {
-		wntBytes, err = os.ReadFile(fName)
+		wntBytes, err = os.ReadFile(sampleGoProjectPath + fName)
 	}
 	if err != nil {
 		return "", nil, nil, err
@@ -164,10 +162,7 @@ func Test_ProcessInPlace_NoTargetNoForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"in place replacing (alt dir) of "+
-			fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md to "+
-			tFile,
+		"Expanding "+sampleGoProjectPath+"README.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -206,10 +201,7 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"in place replacing (alt dir) of "+
-			fullSampleGoProjectPath+string(os.PathSeparator)+
-			"README.md to "+
-			tFile,
+		"Expanding "+sampleGoProjectPath+"README.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -302,8 +294,7 @@ func Test_ProcessInPlace_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"in place replacing of "+
-			tFile,
+		"Expanding "+sampleGoProjectPath+"README.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -346,8 +337,7 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"in place replacing of "+
-			tFile,
+		"Expanding "+sampleGoProjectPath+"README.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -440,8 +430,7 @@ func Test_ProcessInPlace_OverwriteNoForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"in place replacing of "+
-			tFile,
+		"Expanding "+sampleGoProjectPath+"README.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -484,8 +473,7 @@ func Test_ProcessInPlace_OverwriteForceVerbose(t *testing.T) {
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"in place replacing of "+
-			tFile,
+		"Expanding "+sampleGoProjectPath+"README.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",

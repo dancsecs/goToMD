@@ -153,17 +153,14 @@ func main() {
 
 	for ; profileIterations >= 0; profileIterations-- {
 		for i, mi := 0, len(filesToProcess); i < mi && err == nil; i++ {
-			err = os.Chdir(origWd)
-			if err == nil {
-				switch {
-				case cleanOnly:
-					//   err = cleanMD(filesToProcess[i])
-					err = cleanMD(filesToProcess[i])
-				case replace:
-					err = replaceMDInPlace(filesToProcess[i])
-				default:
-					err = expandMD(filesToProcess[i])
-				}
+			switch {
+			case cleanOnly:
+				//   err = cleanMD(filesToProcess[i])
+				err = cleanMD(filesToProcess[i])
+			case replace:
+				err = replaceMDInPlace(filesToProcess[i])
+			default:
+				err = expandMD(filesToProcess[i])
 			}
 		}
 	}

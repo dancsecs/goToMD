@@ -23,42 +23,40 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-func expandMD(cleanPath string) error {
+func expandMD(rPath string) error {
 	var err error
-	var absCleanPath string
-	var absDir string
-	var srcFile, dstFile string
+	var rDir, rFile string
+	var wDir, wFile string
+	var wPath string
 	var fileBytes []byte
 	var res string
 
-	absCleanPath, err = filepath.Abs(cleanPath)
-	if err == nil {
-		absDir = filepath.Dir(absCleanPath)
-		srcFile = filepath.Base(absCleanPath)
-		dstFile = filepath.Join(outputDir, srcFile[:len(srcFile)-len(".gtm")])
+	rDir, rFile = filepath.Split(rPath)
+	wDir = rDir
+	if outputDir != "." {
+		wDir = outputDir
 	}
+	wFile = strings.TrimSuffix(rFile, ".gtm")
+	wPath = filepath.Join(wDir, wFile)
 
 	if verbose {
-		log.Printf("Expanding %s to: %s", absCleanPath, dstFile)
+		log.Printf("Expanding %s to: %s", rPath, wPath)
 	}
 
 	if err == nil {
-		err = os.Chdir(absDir)
-	}
-
-	if err == nil {
-		fileBytes, err = os.ReadFile(srcFile) //nolint:gosec // Ok.
+		fileBytes, err = os.ReadFile(rPath) //nolint:gosec // Ok.
 	}
 
 	if err == nil {
 		fileData := string(bytes.TrimRight(fileBytes, "\n"))
-		res, err = updateMarkDownDocument(fileData)
+		res, err = updateMarkDownDocument(rDir, fileData)
 	}
 
 	if err == nil {
-		err = writeFile(dstFile, res)
+		err = writeFile(wPath, res)
 	}
 
 	return err

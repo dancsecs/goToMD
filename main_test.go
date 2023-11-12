@@ -72,14 +72,15 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
-	pName := filepath.Join(dir, "README.md.gtm")
+	rName := filepath.Join(dir, "README.md.gtm")
+	tName := filepath.Join(dir, "README.md")
 	chk.Stdout(
-		"filesToProcess:  "+pName,
-		"Confirm overwrite of README.md (Y to overwrite)?\\s",
+		"filesToProcess:  "+rName,
+		"Confirm overwrite of "+tName+" (Y to overwrite)?\\s",
 	)
 
 	chk.Log(
-		"Expanding "+pName+" to: README.md",
+		"Expanding "+rName+" to: "+tName,
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
@@ -167,7 +168,7 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 
 	chk.Log(
 		"",
-		"in place replacing of "+fName,
+		"Expanding "+fName+" <inPlace> to: "+fName,
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
@@ -373,7 +374,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 	)
 
 	chk.Log(
-		"in place replacing of "+pName,
+		"Expanding "+pName+" <inPlace> to: "+pName,
 		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
@@ -457,10 +458,9 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 		"filesToProcess:  "+pName,
 		license,
 	)
-	oName := filepath.Join(altDir, "README.md.gtm")
-	chk.Log(
-		"Cleaning README.md to: " + oName + " in dir: " + dir,
-	)
+	rFile := filepath.Join(dir, "README.md")
+	wFile := filepath.Join(altDir, "README.md.gtm")
+	chk.Log("Cleaning " + rFile + " to: " + wFile)
 }
 
 func Test_SampleGoProject_CpuProfile(t *testing.T) {

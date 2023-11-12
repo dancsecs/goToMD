@@ -25,32 +25,28 @@ import (
 	"path/filepath"
 )
 
-func cleanMD(completePath string) error {
+func cleanMD(rPath string) error {
 	var err error
-	var absCompletePath string
-	var absDir string
-	var srcFile, dstFile string
+	var rDir, rFile string
+	var wDir, wFile string
+	var wPath string
 	var fileBytes []byte
 	var res string
 
-	absCompletePath, err = filepath.Abs(completePath)
-	if err == nil {
-		absDir = filepath.Dir(absCompletePath)
-		srcFile = filepath.Base(absCompletePath)
-		dstFile = filepath.Join(outputDir, srcFile+".gtm")
+	rDir, rFile = filepath.Split(rPath)
+	wDir = rDir
+	if outputDir != "." {
+		wDir = outputDir
 	}
+	wFile = rFile + ".gtm"
+	wPath = filepath.Join(wDir, wFile)
 
 	if verbose {
-		log.Printf("Cleaning %s to: %s in dir: %s",
-			srcFile, dstFile, absDir)
+		log.Printf("Cleaning %s to: %s", rPath, wPath)
 	}
 
 	if err == nil {
-		err = os.Chdir(absDir)
-	}
-
-	if err == nil {
-		fileBytes, err = os.ReadFile(srcFile) //nolint:gosec // Ok.
+		fileBytes, err = os.ReadFile(rPath) //nolint:gosec // Ok.
 	}
 
 	if err == nil {
@@ -59,7 +55,7 @@ func cleanMD(completePath string) error {
 	}
 
 	if err == nil {
-		err = writeFile(dstFile, res)
+		err = writeFile(wPath, res)
 	}
 
 	return err
