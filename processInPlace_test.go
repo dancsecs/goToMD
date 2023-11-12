@@ -63,7 +63,7 @@ func setupInPlaceDirs(makeTarget bool) (string, func(), error) {
 	}
 
 	if makeTarget {
-		fData, err = os.ReadFile(filepath.Join(fullSampleGoProjectPath, fName))
+		fData, err = os.ReadFile(filepath.Join(sampleGoProjectPath, fName))
 		if err != nil {
 			return "", nil, err
 		}

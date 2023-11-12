@@ -1,7 +1,6 @@
 package main
 
 import (
-	"path/filepath"
 	"testing"
 
 	"github.com/dancsecs/szTest"
@@ -37,10 +36,8 @@ func Test_GetDoc_GetInfo_InvalidDirectory(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	absDir, err := filepath.Abs("INVALID_DIRECTORY")
-	chk.NoErr(err)
-	_, err = getInfo("INVALID_DIRECTORY", "TimesTwo")
-	chk.Err(err, "open "+absDir+": no such file or directory")
+	_, err := getInfo("INVALID_DIRECTORY", "TimesTwo")
+	chk.Err(err, "open INVALID_DIRECTORY: no such file or directory")
 }
 
 func Test_GetDoc_GetInfo_InvalidObject(t *testing.T) {

@@ -31,12 +31,6 @@ import (
 const sampleGoProjectPath = "." + string(os.PathSeparator) +
 	"sampleGoProject" + string(os.PathSeparator)
 
-var fullSampleGoProjectPath string
-
-func init() {
-	fullSampleGoProjectPath, _ = filepath.Abs(sampleGoProjectPath)
-}
-
 func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
@@ -169,7 +163,6 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 	chk.Log(
 		"",
 		"Expanding "+fName+" <inPlace> to: "+fName,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
@@ -375,7 +368,6 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
 
 	chk.Log(
 		"Expanding "+pName+" <inPlace> to: "+pName,
-		"Loading Package info for: .",
 		"getInfo(\"package\")",
 		"getInfo(\"TimesTwo\")",
 		"getInfo(\"TimesThree\")",
