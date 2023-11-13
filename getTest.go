@@ -28,7 +28,7 @@ import (
 )
 
 const tabSPaces = "    "
-const hardSpace = "&nbsp;"
+const hardSpace = "\\unicode{160}"
 const hardUnderscore = "&#x332;"
 const hardPercent = "&#xFE6A;"
 
