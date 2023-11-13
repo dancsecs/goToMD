@@ -26,6 +26,7 @@ import (
 	"go/token"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -248,11 +249,15 @@ func getInfo(dir, name string) (*docInfo, error) {
 	var ok bool
 	var err error
 
-	pkgInfo, ok = packages[dir]
-	if !ok {
-		pkgInfo, err = createPackageInfo(dir)
-		if err == nil {
-			packages[dir] = pkgInfo
+	cwd, err := os.Getwd()
+	if err == nil {
+		pDir := filepath.Join(cwd, dir)
+		pkgInfo, ok = packages[pDir]
+		if !ok {
+			pkgInfo, err = createPackageInfo(dir)
+			if err == nil {
+				packages[pDir] = pkgInfo
+			}
 		}
 	}
 

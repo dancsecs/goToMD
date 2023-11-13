@@ -82,6 +82,9 @@ func Test_ProcessExpand_NoTargetNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
+	// Clear packages from other runs.
+	packages = make(map[string]*packageInfo)
+
 	setupExpandGlobals(
 		chk, expandGlobals{forceOverwrite: false, verbose: false},
 	)
