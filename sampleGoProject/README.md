@@ -80,15 +80,15 @@ and run a specific test
 go test -v -cover -run Test_PASS_SampleGoProject .
 ```
 
-$\small{\texttt{===\unicode{160}RUN\unicode{160}\unicode{160}\unicode{160}Test\unicode{95}PASS\unicode{95}SampleGoProject}}$
+$\small{\texttt{===&nbsp;RUN&nbsp;&nbsp;&nbsp;Test&#x332;PASS&#x332;SampleGoProject}}$
 <br>
-$\small{\texttt{---\unicode{160}PASS:\unicode{160}Test\unicode{95}PASS\unicode{95}SampleGoProject\unicode{160}(0.0s)}}$
+$\small{\texttt{---&nbsp;PASS:&nbsp;Test&#x332;PASS&#x332;SampleGoProject&nbsp;(0.0s)}}$
 <br>
 $\small{\texttt{PASS}}$
 <br>
-$\small{\texttt{coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
+$\small{\texttt{coverage:&nbsp;100.0%&nbsp;of&nbsp;statements}}$
 <br>
-$\small{\texttt{ok\unicode{160}\unicode{160}    github.com/dancsecs/goToMD/sampleGoProject    coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
+$\small{\texttt{ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;github.com/dancsecs/goToMD/sampleGoProject&nbsp;&nbsp;&nbsp;&nbsp;coverage:&nbsp;100.0%&nbsp;of&nbsp;statements}}$
 <br>
 <!--- goToMD::End::tst::./Test_PASS_SampleGoProject -->
 
@@ -99,43 +99,43 @@ or run all tests in a package:
 go test -v -cover .
 ```
 
-$\small{\texttt{===\unicode{160}RUN\unicode{160}\unicode{160}\unicode{160}Test\unicode{95}PASS\unicode{95}SampleGoProject}}$
+$\small{\texttt{===&nbsp;RUN&nbsp;&nbsp;&nbsp;Test&#x332;PASS&#x332;SampleGoProject}}$
 <br>
-$\small{\texttt{---\unicode{160}PASS:\unicode{160}Test\unicode{95}PASS\unicode{95}SampleGoProject\unicode{160}(0.0s)}}$
+$\small{\texttt{---&nbsp;PASS:&nbsp;Test&#x332;PASS&#x332;SampleGoProject&nbsp;(0.0s)}}$
 <br>
-$\small{\texttt{===\unicode{160}RUN\unicode{160}\unicode{160}\unicode{160}Test\unicode{95}FAIL\unicode{95}SampleGoProject}}$
+$\small{\texttt{===&nbsp;RUN&nbsp;&nbsp;&nbsp;Test&#x332;FAIL&#x332;SampleGoProject}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}sample\unicode{95}test.go:28:\unicode{160}unexpected\unicode{160}int:}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;sample&#x332;test.go:28:&nbsp;unexpected&nbsp;int:}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\emph{2+2=5\unicode{160}(is\unicode{160}true\unicode{160}for\unicode{160}big\unicode{160}values\unicode{160}of\unicode{160}two)}:}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\emph{2+2=5&nbsp;(is&nbsp;true&nbsp;for&nbsp;big&nbsp;values&nbsp;of&nbsp;two)}:}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{magenta}GOT:\unicode{160}\color{default}\color{darkturquoise}4\color{default}}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{magenta}GOT:&nbsp;\color{default}\color{darkturquoise}4\color{default}}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{cyan}WNT:\unicode{160}\color{default}\color{darkturquoise}5\color{default}}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{cyan}WNT:&nbsp;\color{default}\color{darkturquoise}5\color{default}}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}sample\unicode{95}test.go:29:\unicode{160}unexpected\unicode{160}string:}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;sample&#x332;test.go:29:&nbsp;unexpected&nbsp;string:}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{magenta}GOT:\unicode{160}\color{default}\color{green}New\unicode{160}in\unicode{160}Got\color{default}\unicode{160}Similar\unicode{160}in\unicode{160}(\color{darkturquoise}1\color{default})\unicode{160}both}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{magenta}GOT:&nbsp;\color{default}\color{green}New&nbsp;in&nbsp;Got\color{default}&nbsp;Similar&nbsp;in&nbsp;(\color{darkturquoise}1\color{default})&nbsp;both}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{cyan}WNT:\unicode{160}\color{default}\unicode{160}Similar\unicode{160}in\unicode{160}(\color{darkturquoise}2\color{default})\unicode{160}both\color{red},\unicode{160}new\unicode{160}in\unicode{160}Wnt\color{default}}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{cyan}WNT:&nbsp;\color{default}&nbsp;Similar&nbsp;in&nbsp;(\color{darkturquoise}2\color{default})&nbsp;both\color{red},&nbsp;new&nbsp;in&nbsp;Wnt\color{default}}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}sample\unicode{95}test.go:35:\unicode{160}Unexpected\unicode{160}stdout\unicode{160}Entry:\unicode{160}got\unicode{160}(1\unicode{160}lines)\unicode{160}-\unicode{160}want\unicode{160}(1\unicode{160}lines)}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;sample&#x332;test.go:35:&nbsp;Unexpected&nbsp;stdout&nbsp;Entry:&nbsp;got&nbsp;(1&nbsp;lines)&nbsp;-&nbsp;want&nbsp;(1&nbsp;lines)}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{darkturquoise}0\color{default}:\color{darkturquoise}0\color{default}\unicode{160}This\unicode{160}output\unicode{160}line\unicode{160}\color{red}is\color{default}\color{yellow}/\color{default}\color{green}will\unicode{160}be\color{default}\unicode{160}different}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{darkturquoise}0\color{default}:\color{darkturquoise}0\color{default}&nbsp;This&nbsp;output&nbsp;line&nbsp;\color{red}is\color{default}\color{yellow}/\color{default}\color{green}will&nbsp;be\color{default}&nbsp;different}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}sample\unicode{95}test.go:39:\unicode{160}unexpected\unicode{160}string:}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;sample&#x332;test.go:39:&nbsp;unexpected&nbsp;string:}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{magenta}GOT:\unicode{160}\color{default}\color{darkturquoise}Total\color{default}:\unicode{160}6}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{magenta}GOT:&nbsp;\color{default}\color{darkturquoise}Total\color{default}:&nbsp;6}}$
 <br>
-$\small{\texttt{\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\unicode{160}\color{cyan}WNT:\unicode{160}\color{default}\color{darkturquoise}Sum\color{default}:\unicode{160}6}}$
+$\small{\texttt{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\color{cyan}WNT:&nbsp;\color{default}\color{darkturquoise}Sum\color{default}:&nbsp;6}}$
 <br>
-$\small{\texttt{---\unicode{160}FAIL:\unicode{160}Test\unicode{95}FAIL\unicode{95}SampleGoProject\unicode{160}(0.0s)}}$
+$\small{\texttt{---&nbsp;FAIL:&nbsp;Test&#x332;FAIL&#x332;SampleGoProject&nbsp;(0.0s)}}$
 <br>
 $\small{\texttt{FAIL}}$
 <br>
-$\small{\texttt{coverage:\unicode{160}100.0%\unicode{160}of\unicode{160}statements}}$
+$\small{\texttt{coverage:&nbsp;100.0%&nbsp;of&nbsp;statements}}$
 <br>
-$\small{\texttt{FAIL\unicode{160}github.com/dancsecs/goToMD/sampleGoProject\unicode{160}0.0s}}$
+$\small{\texttt{FAIL&nbsp;github.com/dancsecs/goToMD/sampleGoProject&nbsp;0.0s}}$
 <br>
 $\small{\texttt{FAIL}}$
 <br>

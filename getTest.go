@@ -27,6 +27,10 @@ import (
 	"strings"
 )
 
+const tabSPaces = "    "
+const hardSpace = "&nbsp;"
+const hardUnderscore = "&#x332;"
+
 // "--- PASS: Test_PASS_SampleGoProject (0.0s)".
 // "--- FAIL: Test_FAIL_SampleGoProject (0.0s)".
 var squashTestTime = regexp.MustCompile(
@@ -78,9 +82,11 @@ func runTest(dir, tests string) (string, string, error) {
 
 		res = squashCached.ReplaceAllString(res, `${1}${2}`)
 
-		res = strings.ReplaceAll(res, " ", `\unicode{160}`)
+		res = strings.ReplaceAll(res, "\t", tabSPaces)
 
-		res = strings.ReplaceAll(res, "_", `\unicode{95}`)
+		res = strings.ReplaceAll(res, " ", hardSpace)
+
+		res = strings.ReplaceAll(res, "_", hardUnderscore)
 
 		latexRes := ""
 		lines := strings.Split(res, "\n")

@@ -79,8 +79,8 @@ func Test_RunTest(t *testing.T) {
 	chk.AddSub("{{latexOn}}", `$\small{\texttt{`)
 	chk.AddSub("{{latexOff}}", `}}$`)
 	chk.AddSub(`\t\d+\.\d+s`, "\t0.0s")
-	chk.AddSub(` `, `\unicode{160}`)
-	chk.AddSub(`_`, `\unicode{95}`)
+	chk.AddSub(` `, hardSpace)
+	chk.AddSub(`_`, hardUnderscore)
 	chk.Stdout(`
     {{latexOn}}=== RUN   Test_PASS_SampleGoProject{{latexOff}}
     <br>
