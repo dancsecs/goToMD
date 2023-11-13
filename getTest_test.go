@@ -116,7 +116,7 @@ func Test_RunTest(t *testing.T) {
     <br>
     {{latexOn}}FAIL{{latexOff}}
     <br>
-    {{latexOn}}coverage: 100.0% of statements{{latexOff}}
+    {{latexOn}}coverage: 100.0&#xFE6A; of statements{{latexOff}}
     <br>
     {{latexOn}}FAIL github.com/dancsecs/goToMD/sampleGoProject 0.0s{{latexOff}}
     <br>

@@ -86,9 +86,9 @@ $\small{\texttt{---&nbsp;PASS:&nbsp;Test&#x332;PASS&#x332;SampleGoProject&nbsp;(
 <br>
 $\small{\texttt{PASS}}$
 <br>
-$\small{\texttt{coverage:&nbsp;100.0%&nbsp;of&nbsp;statements}}$
+$\small{\texttt{coverage:&nbsp;100.0&#xFE6A;&nbsp;of&nbsp;statements}}$
 <br>
-$\small{\texttt{ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;github.com/dancsecs/goToMD/sampleGoProject&nbsp;&nbsp;&nbsp;&nbsp;coverage:&nbsp;100.0%&nbsp;of&nbsp;statements}}$
+$\small{\texttt{ok&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;github.com/dancsecs/goToMD/sampleGoProject&nbsp;&nbsp;&nbsp;&nbsp;coverage:&nbsp;100.0&#xFE6A;&nbsp;of&nbsp;statements}}$
 <br>
 <!--- goToMD::End::tst::./Test_PASS_SampleGoProject -->
 
@@ -133,7 +133,7 @@ $\small{\texttt{---&nbsp;FAIL:&nbsp;Test&#x332;FAIL&#x332;SampleGoProject&nbsp;(
 <br>
 $\small{\texttt{FAIL}}$
 <br>
-$\small{\texttt{coverage:&nbsp;100.0%&nbsp;of&nbsp;statements}}$
+$\small{\texttt{coverage:&nbsp;100.0&#xFE6A;&nbsp;of&nbsp;statements}}$
 <br>
 $\small{\texttt{FAIL&nbsp;github.com/dancsecs/goToMD/sampleGoProject&nbsp;0.0s}}$
 <br>

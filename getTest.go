@@ -30,6 +30,7 @@ import (
 const tabSPaces = "    "
 const hardSpace = "&nbsp;"
 const hardUnderscore = "&#x332;"
+const hardPercent = "&#xFE6A;"
 
 // "--- PASS: Test_PASS_SampleGoProject (0.0s)".
 // "--- FAIL: Test_FAIL_SampleGoProject (0.0s)".
@@ -83,6 +84,8 @@ func runTest(dir, tests string) (string, string, error) {
 		res = squashCached.ReplaceAllString(res, `${1}${2}`)
 
 		res = strings.ReplaceAll(res, "\t", tabSPaces)
+
+		res = strings.ReplaceAll(res, "%", hardPercent)
 
 		res = strings.ReplaceAll(res, " ", hardSpace)
 
