@@ -120,13 +120,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 `
 
-const defaultProfileIterations = 25
-
 func main() {
 	var err error
 	var origWd string
 	var filesToProcess []string
-	var profileIterations int
+	var profileIterations uint
 
 	// Restore original working directory on exit.
 	origWd, err = os.Getwd()
@@ -144,14 +142,16 @@ func main() {
 			err = pprof.StartCPUProfile(f)
 			if err == nil {
 				defer pprof.StopCPUProfile()
-				profileIterations = defaultProfileIterations
+				profileIterations = cpuProfileIterations
 			}
 		}
+	} else {
+		profileIterations = 1
 	}
 
 	filesToProcess, err = getFilesToProcess()
 
-	for ; profileIterations >= 0; profileIterations-- {
+	for ; profileIterations > 0; profileIterations-- {
 		for i, mi := 0, len(filesToProcess); i < mi && err == nil; i++ {
 			switch {
 			case cleanOnly:

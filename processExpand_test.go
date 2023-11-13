@@ -41,7 +41,7 @@ func setupExpandGlobals(
 }
 
 func setupExpandDirs(makeTarget bool) error {
-	const fName = "README.md"
+	const fName = "README_SHORT.md"
 	var err error
 	var tFile string
 	var fData []byte
@@ -57,7 +57,7 @@ func setupExpandDirs(makeTarget bool) error {
 }
 
 func getExpandFiles() (string, []string, []string, error) {
-	const fName = "README.md"
+	const fName = "README_SHORT.md"
 	var targetPath string
 	var err error
 	var gotBytes []byte
@@ -90,7 +90,7 @@ func Test_ProcessExpand_NoTargetNoForceNoVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupExpandDirs(false))
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -110,7 +110,7 @@ func Test_ProcessExpand_NoTargetForceNoVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupExpandDirs(false))
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -130,28 +130,15 @@ func Test_ProcessExpand_NoTargetNoForceVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupExpandDirs(false))
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README_SHORT.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"InterfaceType\")",
-		"getInfo(\"StructureType\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
 	)
 
 	chk.Stdout()
@@ -166,28 +153,15 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupExpandDirs(false))
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README_SHORT.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"InterfaceType\")",
-		"getInfo(\"StructureType\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
 	)
 
 	chk.Stdout()
@@ -204,7 +178,7 @@ func Test_ProcessExpand_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -228,7 +202,7 @@ func Test_ProcessExpand_CancelOverwriteTargetForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -250,28 +224,15 @@ func Test_ProcessExpand_CancelOverwriteNoForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README_SHORT.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"InterfaceType\")",
-		"getInfo(\"StructureType\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
 	)
 
 	chk.Stdout(
@@ -290,28 +251,15 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README_SHORT.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"InterfaceType\")",
-		"getInfo(\"StructureType\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
 	)
 
 	chk.Stdout()
@@ -328,7 +276,7 @@ func Test_ProcessExpand_OverwriteNoForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -352,7 +300,7 @@ func Test_ProcessExpand_OverwriteTargetForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	_, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
@@ -374,28 +322,15 @@ func Test_ProcessExpand_OverwriteNoForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	tFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+tFile,
+		"Expanding "+sampleGoProjectPath+"README_SHORT.md.gtm to: "+tFile,
 		"getInfo(\"package\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"InterfaceType\")",
-		"getInfo(\"StructureType\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
 	)
 
 	chk.Stdout(
@@ -414,28 +349,15 @@ func Test_ProcessExpand_OverwriteForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(expandMD(sampleGoProjectPath + "README.md.gtm"))
+	chk.NoErr(expandMD(sampleGoProjectPath + "README_SHORT.md.gtm"))
 
 	wFile, got, wnt, err := getExpandFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README.md.gtm to: "+wFile,
+		"Expanding "+sampleGoProjectPath+"README_SHORT.md.gtm to: "+wFile,
 		"getInfo(\"package\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"InterfaceType\")",
-		"getInfo(\"StructureType\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesTwo\")",
-		"getInfo(\"TimesThree\")",
 	)
 
 	chk.Stdout()

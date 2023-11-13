@@ -406,7 +406,7 @@ func Test_SampleGoProject_CpuProfile(t *testing.T) {
 		"-f",
 		"-o", altDir,
 		"-U", pprofFilePath,
-		"-u", "2",
+		"-u", "1",
 		filepath.Join(dir, "README.md.gtm"),
 	})
 
