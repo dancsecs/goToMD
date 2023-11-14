@@ -382,8 +382,8 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 
 	pName := filepath.Join(dir, "README.md")
 	chk.Stdout(
-		"filesToProcess:  "+pName,
-		license,
+		license +
+			"filesToProcess:  " + pName + "\n",
 	)
 	rFile := filepath.Join(dir, "README.md")
 	wFile := filepath.Join(altDir, "README.md.gtm")

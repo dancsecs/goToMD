@@ -136,6 +136,10 @@ func main() {
 
 	processArgs()
 
+	if showLicense {
+		fmt.Print(license)
+	}
+
 	if cpuProfile != "" {
 		f, err := os.Create(cpuProfile)
 		if err == nil {
@@ -164,10 +168,6 @@ func main() {
 			}
 		}
 	}
-	if showLicense {
-		fmt.Print(license)
-	}
-
 	if err != nil {
 		panic(err)
 	}
