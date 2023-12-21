@@ -32,3 +32,16 @@ func Test_GetDoc_OneLine(t *testing.T) {
 
 	chk.Str(dInfo.oneLine(), "UNKNOWN DECLARATION")
 }
+
+func Test_GetDoc_NaturalComments(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	dInfo := &docInfo{}
+	dInfo.doc = append(dInfo.doc, "a", "b")
+
+	chk.Str(
+		dInfo.naturalComments(),
+		"// a\n// b",
+	)
+}

@@ -85,7 +85,7 @@ func Test_UpdateMarkDown_InvalidCommand(t *testing.T) {
 	chk.Str(md, "")
 }
 
-func Test_GetInfo_Expand(t *testing.T) {
+func Test_Markdown_Expand(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -104,4 +104,12 @@ func Test_GetInfo_Expand(t *testing.T) {
 			"TimesTwo returns the value times two.\n"+
 			"<!--- goToMD::End::doc::TimesTwo -->\n",
 	)
+}
+
+func Test_Markdown_Search(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	chk.Int(action.search("a"), -1)
+	chk.Int(action.search("z"), -1)
 }
