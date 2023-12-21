@@ -25,7 +25,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_ExpandGoTst(t *testing.T) {
+func Test_GetTest_GetGoTst(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -39,7 +39,7 @@ func Test_ExpandGoTst(t *testing.T) {
 	chk.Err(err, "no tests to run")
 }
 
-func Test_RunTestNotDirectory(t *testing.T) {
+func Test_GetTest_RunTestNotDirectory(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -52,7 +52,7 @@ func Test_RunTestNotDirectory(t *testing.T) {
 	)
 }
 
-func Test_RunTest(t *testing.T) {
+func Test_GetTest_RunTest(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 

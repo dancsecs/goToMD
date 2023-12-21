@@ -32,7 +32,7 @@ type docInfoTest struct {
 	oneLine string
 }
 
-func Test_GetDoc_GetInfo_InvalidDirectory(t *testing.T) {
+func Test_GoPackage_GetInfo_InvalidDirectory(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -40,7 +40,7 @@ func Test_GetDoc_GetInfo_InvalidDirectory(t *testing.T) {
 	chk.Err(err, "open INVALID_DIRECTORY: no such file or directory")
 }
 
-func Test_GetDoc_GetInfo_InvalidObject(t *testing.T) {
+func Test_GoPackage_GetInfo_InvalidObject(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -48,7 +48,7 @@ func Test_GetDoc_GetInfo_InvalidObject(t *testing.T) {
 	chk.Err(err, "unknown package object: DOES_NOT_EXIST")
 }
 
-func Test_DocInfo_RunTests(t *testing.T) {
+func Test_GoPackage_DocInfo_RunTests(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

@@ -24,7 +24,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_SampleNoArgsNotDirectory(t *testing.T) {
+func Test_ArgUsage_SampleNoArgsNotDirectory(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -39,7 +39,7 @@ func Test_SampleNoArgsNotDirectory(t *testing.T) {
 	)
 }
 
-func Test_SampleInvalidFile(t *testing.T) {
+func Test_ArgUsage_SampleInvalidFile(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -55,7 +55,7 @@ func Test_SampleInvalidFile(t *testing.T) {
 	)
 }
 
-func Test_InvalidDefaultPermissions(t *testing.T) {
+func Test_ArgUsage_InvalidDefaultPermissions(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -73,7 +73,7 @@ func Test_InvalidDefaultPermissions(t *testing.T) {
 	)
 }
 
-func Test_InvalidCleanAndReplace(t *testing.T) {
+func Test_ArgUsage_InvalidCleanAndReplace(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -92,7 +92,7 @@ func Test_InvalidCleanAndReplace(t *testing.T) {
 	)
 }
 
-func Test_InvalidOutoutDirectory(t *testing.T) {
+func Test_ArgUsage_InvalidOutoutDirectory(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

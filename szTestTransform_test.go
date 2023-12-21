@@ -24,7 +24,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_MarksToMarkdownHTML(t *testing.T) {
+func Test_SzTestTransform_MarksToMarkdownHTML(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

@@ -24,7 +24,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_ParseCmd(t *testing.T) {
+func Test_CmdParse_ParseCmd(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -60,7 +60,7 @@ func Test_ParseCmd(t *testing.T) {
 	chk.Str(action, "action")
 }
 
-func Test_ParseCmds1(t *testing.T) {
+func Test_CmdParse_ParseCmds1(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -93,7 +93,7 @@ func Test_ParseCmds1(t *testing.T) {
 	chk.StrSlice(actions, []string{"action"})
 }
 
-func Test_ParseCmds2(t *testing.T) {
+func Test_CmdParse_ParseCmds2(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

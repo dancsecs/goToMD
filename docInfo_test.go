@@ -24,7 +24,7 @@ import (
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-func Test_GetDoc_OneLine(t *testing.T) {
+func Test_DocInfo_OneLine(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -33,7 +33,7 @@ func Test_GetDoc_OneLine(t *testing.T) {
 	chk.Str(dInfo.oneLine(), "UNKNOWN DECLARATION")
 }
 
-func Test_GetDoc_NaturalComments(t *testing.T) {
+func Test_DocInfo_NaturalComments(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

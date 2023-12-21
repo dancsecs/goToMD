@@ -29,7 +29,7 @@ import (
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-func Test_MarkGoCode(t *testing.T) {
+func Test_GetDoc_MarkGoCode(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -44,7 +44,7 @@ func Test_MarkGoCode(t *testing.T) {
 	)
 }
 
-func Test_MarkBashCode(t *testing.T) {
+func Test_GetDoc_MarkBashCode(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -59,7 +59,7 @@ func Test_MarkBashCode(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDcl_NoItems(t *testing.T) {
+func Test_GetDoc_GetGoDcl_NoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -68,7 +68,7 @@ func Test_ExpandGoDcl_NoItems(t *testing.T) {
 	chk.Str(s, "")
 }
 
-func Test_ExpandGoDcl_Package(t *testing.T) {
+func Test_GetDoc_GetGoDcl_Package(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -80,7 +80,7 @@ func Test_ExpandGoDcl_Package(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDcl_InvalidItem(t *testing.T) {
+func Test_GetDoc_GetGoDcl_InvalidItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -89,7 +89,7 @@ func Test_ExpandGoDcl_InvalidItem(t *testing.T) {
 	chk.Str(s, "")
 }
 
-func Test_ExpandGoDcl_OneItem(t *testing.T) {
+func Test_GetDoc_GetGoDcl_OneItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -102,7 +102,7 @@ func Test_ExpandGoDcl_OneItem(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDcl_TwoItems(t *testing.T) {
+func Test_GetDoc_GetGoDcl_TwoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -115,7 +115,7 @@ func Test_ExpandGoDcl_TwoItems(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDclSingle_NoItems(t *testing.T) {
+func Test_GetDoc_GetGoDclSingle_NoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -124,7 +124,7 @@ func Test_ExpandGoDclSingle_NoItems(t *testing.T) {
 	chk.Str(s, "")
 }
 
-func Test_ExpandGoDclSingle_PackageNoItems(t *testing.T) {
+func Test_GetDoc_GetGoDclSingle_PackageNoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -136,7 +136,7 @@ func Test_ExpandGoDclSingle_PackageNoItems(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDclSingle_InvalidItem(t *testing.T) {
+func Test_GetDoc_GetGoDclSingle_InvalidItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -145,7 +145,7 @@ func Test_ExpandGoDclSingle_InvalidItem(t *testing.T) {
 	chk.Str(s, "")
 }
 
-func Test_ExpandGoDclSingle_OneItem(t *testing.T) {
+func Test_GetDoc_GetGoDclSingle_OneItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -158,7 +158,7 @@ func Test_ExpandGoDclSingle_OneItem(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDclSingle_TwoItems(t *testing.T) {
+func Test_GetDoc_GetGoDclSingle_TwoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -171,7 +171,7 @@ func Test_ExpandGoDclSingle_TwoItems(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDclNatural_InvalidItem(t *testing.T) {
+func Test_GetDoc_GetGoDclNatural_InvalidItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -180,7 +180,7 @@ func Test_ExpandGoDclNatural_InvalidItem(t *testing.T) {
 	chk.Str(s, "")
 }
 
-func Test_ExpandGoDclNatural_OneItem(t *testing.T) {
+func Test_GetDoc_GetGoDclNatural_OneItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -196,7 +196,7 @@ func Test_ExpandGoDclNatural_OneItem(t *testing.T) {
 	)
 }
 
-func Test_ExpandGoDclNatural_TwoItems(t *testing.T) {
+func Test_GetDoc_GetGoDclNatural_TwoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

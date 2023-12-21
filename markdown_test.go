@@ -24,7 +24,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_CleanMarkDownDocument(t *testing.T) {
+func Test_Markdown_CleanMarkDownDocument(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -40,7 +40,7 @@ func Test_CleanMarkDownDocument(t *testing.T) {
 	chk.Str(md, "")
 }
 
-func Test_CleanMarkDownDocumentMissingBlankAfterAuto(t *testing.T) {
+func Test_Markdown_CleanMarkDownDocumentMissingBlankAfterAuto(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -55,7 +55,7 @@ func Test_CleanMarkDownDocumentMissingBlankAfterAuto(t *testing.T) {
 	chk.Str(md, "")
 }
 
-func Test_UpdateMarkDownDocument(t *testing.T) {
+func Test_Markdown_UpdateMarkDownDocument(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -70,7 +70,7 @@ func Test_UpdateMarkDownDocument(t *testing.T) {
 	chk.Str(md, "")
 }
 
-func Test_UpdateMarkDown_InvalidCommand(t *testing.T) {
+func Test_Markdown_UpdateMarkDown_InvalidCommand(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 

@@ -229,7 +229,7 @@ func Test_ProcessClean_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tFile)
 }
 
-func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
+func Test_ProcessClean_OverwriteNoForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -251,7 +251,7 @@ func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
 	chk.Log()
 }
 
-func Test_ProcessCLean_OverwriteForceNoVerbose(t *testing.T) {
+func Test_ProcessClean_OverwriteForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -270,7 +270,7 @@ func Test_ProcessCLean_OverwriteForceNoVerbose(t *testing.T) {
 	chk.Log()
 }
 
-func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
+func Test_ProcessClean_OverwriteNoForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -292,7 +292,7 @@ func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
 	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tFile)
 }
 
-func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
+func Test_ProcessClean_OverwriteForceVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
