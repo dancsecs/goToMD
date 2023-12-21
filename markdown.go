@@ -21,6 +21,7 @@ package main
 import (
 	"errors"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -29,17 +30,60 @@ const szAutoPrefix = szTestPrefix + "Auto::"
 const szTestBgnPrefix = szTestPrefix + "Bgn::"
 const szTestEndPrefix = szTestPrefix + "End::"
 const szDocPrefix = "doc::"
-const szTestDocPrefix = szTestPrefix + szDocPrefix
-const szDclnPrefix = "dcln::"
-const szTestDclnPrefix = szTestPrefix + szDclnPrefix
-const szDclsPrefix = "dcls::"
-const szTestDclsPrefix = szTestPrefix + szDclsPrefix
-const szDclPrefix = "dcl::"
-const szTestDclPrefix = szTestPrefix + szDclPrefix
 const szTstPrefix = "tst::"
-const szTestTstPrefix = szTestPrefix + szTstPrefix
-const szFilePrefix = "file::"
-const szTestFilePrefix = szTestPrefix + szFilePrefix
+
+type commandAction struct {
+	cmdPrefix []string
+	cmdAction []func(string) (string, error)
+}
+
+func (c *commandAction) add(p string, a func(string) (string, error)) {
+	c.cmdPrefix = append(c.cmdPrefix, p)
+	c.cmdAction = append(c.cmdAction, a)
+}
+
+func (c *commandAction) sort() {
+	sort.Sort(c)
+}
+
+func (c *commandAction) search(cmd string) int {
+	cmdIdx := sort.SearchStrings(c.cmdPrefix, cmd)
+	if cmdIdx == len(c.cmdPrefix) || c.cmdPrefix[cmdIdx] != cmd {
+		cmdIdx = -1
+	}
+	return cmdIdx
+}
+
+func (c *commandAction) run(idx int, cmd string) (string, error) {
+	return c.cmdAction[idx](cmd)
+}
+
+func (c *commandAction) Len() int {
+	return len(c.cmdPrefix)
+}
+
+func (c *commandAction) Less(i, j int) bool {
+	return c.cmdPrefix[i] < c.cmdPrefix[j]
+}
+
+func (c *commandAction) Swap(i, j int) {
+	c.cmdPrefix[i], c.cmdPrefix[j] = c.cmdPrefix[j], c.cmdPrefix[i]
+	c.cmdAction[i], c.cmdAction[j] = c.cmdAction[j], c.cmdAction[i]
+}
+
+//nolint:goCheckNoGlobals // Ok.
+var action = commandAction{}
+
+//nolint:goCheckNoInits // Ok.
+func init() {
+	action.add("doc::", getDoc)
+	action.add("dcl::", getDocDecl)
+	action.add("dcln::", getDocDeclNatural)
+	action.add("dcls::", getDocDeclSingle)
+	action.add("file::", getGoFile)
+	action.add("tst::", getGoTst)
+	action.sort()
+}
 
 func cleanMarkDownDocument(fData string) (string, error) {
 	var err error
@@ -79,7 +123,31 @@ func cleanMarkDownDocument(fData string) (string, error) {
 	return strings.TrimRight(updatedFile, "\n"), nil
 }
 
-//nolint:funlen // Ok.
+func expand(prefix, cmd, content string) string {
+	return "" +
+		szTestBgnPrefix + prefix + cmd + " -->\n" +
+		content + "\n" +
+		szTestEndPrefix + prefix + cmd + " -->\n"
+}
+
+func isCmd(l string) (int, int, error) {
+	const sep = "::"
+	var cmdIdx = -1
+	var end = 0
+	if strings.HasPrefix(l, szTestPrefix) {
+		cmd := l[len(szTestPrefix):]
+		end = strings.Index(cmd, sep)
+		if end >= 0 {
+			cmd = cmd[:end+2]
+			cmdIdx = action.search(cmd)
+		}
+		if end < 0 || cmdIdx == -1 {
+			return 0, 0, errors.New("unknown cmd: " + l)
+		}
+	}
+	return cmdIdx, len(szTestPrefix) + end + len(sep), nil
+}
+
 func updateMarkDownDocument(dir, fData string) (string, error) {
 	const skipDirBlank = ""
 	const skipDirThis = "."
@@ -88,6 +156,7 @@ func updateMarkDownDocument(dir, fData string) (string, error) {
 	var res string
 	var cmd string
 	var err error
+	var cmdIdx, cmdStart int
 
 	if !(dir == skipDirBlank || dir == skipDirThis || dir == skipDirThisDir) {
 		var cwd string
@@ -105,54 +174,20 @@ func updateMarkDownDocument(dir, fData string) (string, error) {
 	}
 	updatedFile += "-->\n\n"
 	lines := strings.Split(fData+"\n", "\n")
+
 	for i, mi := 0, len(lines)-1; i < mi && err == nil; i++ {
 		l := strings.TrimRight(lines[i], " ")
-		switch {
-		case !strings.HasPrefix(l, szTestPrefix):
-			updatedFile += l + "\n"
-		case strings.HasPrefix(l, szTestDocPrefix):
-			cmd = l[len(szTestDocPrefix) : len(l)-len(" -->")]
-			var dir, action string
-			dir, action, err = parseCmd(cmd)
-			if err == nil {
-				var di *docInfo
-				di, err = getInfo(dir, action)
+		cmdIdx, cmdStart, err = isCmd(l)
+		if err == nil {
+			if cmdIdx >= 0 {
+				cmd = l[cmdStart : len(l)-len(" -->")]
+				res, err = action.run(cmdIdx, cmd)
 				if err == nil {
-					updatedFile += di.expand(szDocPrefix, cmd)
+					updatedFile += expand(action.cmdPrefix[cmdIdx], cmd, res)
 				}
+			} else {
+				updatedFile += l + "\n"
 			}
-		case strings.HasPrefix(l, szTestDclPrefix):
-			cmd = l[len(szTestDclPrefix) : len(l)-len(" -->")]
-			res, err = expandGoDcl(cmd)
-			if err == nil {
-				updatedFile += res
-			}
-		case strings.HasPrefix(l, szTestDclsPrefix):
-			cmd = l[len(szTestDclsPrefix) : len(l)-len(" -->")]
-			res, err = expandGoDclSingle(cmd)
-			if err == nil {
-				updatedFile += res
-			}
-		case strings.HasPrefix(l, szTestDclnPrefix):
-			cmd = l[len(szTestDclsPrefix) : len(l)-len(" -->")]
-			res, err = expandGoDclNatural(cmd)
-			if err == nil {
-				updatedFile += res
-			}
-		case strings.HasPrefix(l, szTestTstPrefix):
-			cmd := l[len(szTestTstPrefix) : len(l)-len(" -->")]
-			res, err = expandGoTst(cmd)
-			if err == nil {
-				updatedFile += res
-			}
-		case strings.HasPrefix(l, szTestFilePrefix):
-			cmd := l[len(szTestFilePrefix) : len(l)-len(" -->")]
-			res, err = expandGoFile(cmd)
-			if err == nil {
-				updatedFile += res
-			}
-		default:
-			err = errors.New("unknown cmd: " + l)
 		}
 	}
 	if err != nil {

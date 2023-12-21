@@ -53,25 +53,18 @@ func (di *docInfo) oneLine() string {
 func (di *docInfo) naturalComments() string {
 	res := ""
 	for _, l := range di.doc {
-		res += "// " + l + "\n"
+		if res != "" {
+			res += "\n"
+		}
+		res += "// " + l
 	}
 	return res
 }
 
 func (di *docInfo) declGoLang() string {
-	return "```go\n" +
-		strings.Join(di.header, "\n") +
-		"\n```\n"
+	return markGoCode(strings.Join(di.header, "\n"))
 }
 
 func (di *docInfo) docMarkdown() string {
-	return strings.Join(di.doc, "\n") + "\n"
-}
-
-func (di *docInfo) expand(prefix, cmd string) string {
-	return "" +
-		szTestBgnPrefix + prefix + cmd + " -->\n" +
-		di.declGoLang() + "\n" +
-		di.docMarkdown() +
-		szTestEndPrefix + prefix + cmd + " -->\n"
+	return strings.Join(di.doc, "\n")
 }

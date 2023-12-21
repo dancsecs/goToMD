@@ -22,15 +22,39 @@ import (
 	"strings"
 )
 
+func markGoCode(content string) string {
+	return "```go\n" + strings.TrimRight(content, "\n") + "\n```"
+}
+
+func getDoc(cmd string) (string, error) {
+	var d *docInfo
+	res := ""
+	dir, action, err := parseCmds(cmd)
+	if err == nil {
+		for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+			d, err = getInfo(dir[i], action[i])
+			if err == nil {
+				if res != "" {
+					res += "\n\n"
+				}
+				res += d.declGoLang() + "\n\n" +
+					d.docMarkdown()
+			}
+		}
+	}
+	if err == nil {
+		return res, nil
+	}
+	return "", err
+}
+
 func getDocDecl(cmd string) (string, error) {
 	var d *docInfo
 	res := ""
-	dir, action, err := parseCmd(cmd)
+	dir, action, err := parseCmds(cmd)
 	if err == nil {
-		items := strings.Split(action, " ")
-		mi := len(items)
-		for i := 0; i < mi && err == nil; i++ {
-			d, err = getInfo(dir, items[i])
+		for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+			d, err = getInfo(dir[i], action[i])
 			if err == nil {
 				if res != "" {
 					res += "\n"
@@ -40,32 +64,18 @@ func getDocDecl(cmd string) (string, error) {
 		}
 	}
 	if err == nil {
-		return res, nil
+		return markGoCode(res), nil
 	}
 	return "", err
-}
-
-func expandGoDcl(cmd string) (string, error) {
-	doc, err := getDocDecl(cmd)
-	if err != nil {
-		return "", err
-	}
-	return "" +
-			szTestBgnPrefix + szDclPrefix + cmd + " -->\n" +
-			"```go\n" + doc + "\n```\n" +
-			szTestEndPrefix + szDclPrefix + cmd + " -->\n",
-		nil
 }
 
 func getDocDeclSingle(cmd string) (string, error) {
 	var d *docInfo
 	res := ""
-	dir, action, err := parseCmd(cmd)
+	dir, action, err := parseCmds(cmd)
 	if err == nil {
-		items := strings.Split(action, " ")
-		mi := len(items)
-		for i := 0; i < mi && err == nil; i++ {
-			d, err = getInfo(dir, items[i])
+		for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+			d, err = getInfo(dir[i], action[i])
 			if err == nil {
 				if res != "" {
 					res += "\n"
@@ -75,55 +85,29 @@ func getDocDeclSingle(cmd string) (string, error) {
 		}
 	}
 	if err == nil {
-		return res, nil
+		return markGoCode(res), nil
 	}
 	return "", err
-}
-
-func expandGoDclSingle(cmd string) (string, error) {
-	doc, err := getDocDeclSingle(cmd)
-	if err != nil {
-		return "", err
-	}
-	return "" +
-			szTestBgnPrefix + szDclsPrefix + cmd + " -->\n" +
-			"```go\n" + doc + "\n```\n" +
-			szTestEndPrefix + szDclsPrefix + cmd + " -->\n",
-		nil
 }
 
 func getDocDeclNatural(cmd string) (string, error) {
 	var d *docInfo
 	res := ""
-	dir, action, err := parseCmd(cmd)
+	dir, action, err := parseCmds(cmd)
 	if err == nil {
-		items := strings.Split(action, " ")
-		mi := len(items)
-		for i := 0; i < mi && err == nil; i++ {
-			d, err = getInfo(dir, items[i])
+		for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+			d, err = getInfo(dir[i], action[i])
 			if err == nil {
 				if res != "" {
 					res += "\n\n"
 				}
-				res += d.naturalComments()
+				res += d.naturalComments() + "\n"
 				res += d.oneLine()
 			}
 		}
 	}
 	if err == nil {
-		return res, nil
+		return markGoCode(res), nil
 	}
 	return "", err
-}
-
-func expandGoDclNatural(cmd string) (string, error) {
-	doc, err := getDocDeclNatural(cmd)
-	if err != nil {
-		return "", err
-	}
-	return "" +
-			szTestBgnPrefix + szDclnPrefix + cmd + " -->\n" +
-			"```go\n" + doc + "\n```\n" +
-			szTestEndPrefix + szDclnPrefix + cmd + " -->\n",
-		nil
 }

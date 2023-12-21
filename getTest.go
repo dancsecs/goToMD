@@ -94,7 +94,10 @@ func runTest(dir, tests string) (string, string, error) {
 		latexRes := ""
 		lines := strings.Split(res, "\n")
 		for _, line := range lines[:len(lines)-1] {
-			latexRes += "$\\small{\\texttt{" + line + "}}$\n<br>\n"
+			if latexRes != "" {
+				latexRes += "\n"
+			}
+			latexRes += "$\\small{\\texttt{" + line + "}}$\n<br>"
 		}
 		res = latexRes
 		//  res = "<---\n" + string(rawRes) + "\n -->\n\n" + latexRes
@@ -106,20 +109,52 @@ func runTest(dir, tests string) (string, string, error) {
 	return "", "", err
 }
 
-func expandGoTst(cmd string) (string, error) {
+func getGoTst(cmd string) (string, error) {
 	var res string
+	var tstRes string
 	var tstCmd string
-	dir, action, err := parseCmd(cmd)
-	if err == nil {
-		tstCmd, res, err = runTest(dir, action)
+	var cDir string
+	var cAction string
+	var i, mi int
+
+	dir, action, err := parseCmds(cmd)
+
+	for i, mi = 0, len(dir); i < mi && err == nil; i++ {
+		if err == nil {
+			if cDir == "" {
+				cDir = dir[i]
+				cAction = action[i]
+				continue
+			} else {
+				if dir[i] == cDir {
+					cAction += " " + action[i]
+				} else {
+					tstCmd, tstRes, err = runTest(cDir, cAction)
+					if err == nil {
+						cDir = ""
+						if res != "" {
+							res += "\n\n"
+						}
+						res += "```bash\n" + tstCmd + "\n```\n\n" + tstRes
+					}
+				}
+			}
+		}
 	}
+
 	if err == nil {
-		return "" +
-				szTestBgnPrefix + szTstPrefix + cmd + " -->\n" +
-				"```bash\n" + tstCmd + "\n```\n\n" +
-				res +
-				szTestEndPrefix + szTstPrefix + cmd + " -->\n",
-			nil
+		tstCmd, tstRes, err = runTest(cDir, cAction)
+
+		if err == nil {
+			if res != "" {
+				res += "\n\n"
+			}
+			res += "```bash\n" + tstCmd + "\n```\n\n" + tstRes
+		}
+	}
+
+	if err == nil {
+		return res, nil
 	}
 	return "", err
 }

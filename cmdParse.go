@@ -21,6 +21,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -42,4 +44,33 @@ func parseCmd(cmd string) (string, string, error) {
 		return "", "", fmt.Errorf("invalid action: a non-blank action is required")
 	}
 	return dir, action, nil
+}
+
+// ParseCmds parses cmd strings into arrays of directories and actions.
+// Directories are validated while the actions are context sensitive.
+// The first entry must contain a relative directory component however
+// subsequent entries that do not specify a directory will default to
+// the last directory defined.
+func parseCmds(cmdStr string) ([]string, []string, error) {
+	var lastDir string
+	var d, a string
+	var err error
+	var dirs, actions []string
+	cmds := regexp.MustCompile(`[\s\t]+`).Split(cmdStr, -1)
+	for i, mi := 0, len(cmds); i < mi && err == nil; i++ {
+		c := cmds[i]
+		if lastDir != "" && strings.LastIndex(c, string(os.PathSeparator)) < 0 {
+			c = "." + string(os.PathSeparator) + filepath.Join(lastDir, c)
+		}
+		d, a, err = parseCmd(c)
+		if err == nil {
+			dirs = append(dirs, d)
+			actions = append(actions, a)
+			lastDir = d
+		}
+	}
+	if err != nil {
+		return nil, nil, err
+	}
+	return dirs, actions, nil
 }

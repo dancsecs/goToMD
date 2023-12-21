@@ -28,12 +28,12 @@ func Test_ExpandGoFile(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	_, err := expandGoFile("TEST_DIRECTORY_DOES_NOT_EXIST/")
+	_, err := getGoFile("TEST_DIRECTORY_DOES_NOT_EXIST/")
 	chk.Err(
 		err,
 		"relative directory must be specified in cmd: \"TEST_DIRECTORY_DOES_NOT_EXIST/\"",
 	)
 
-	_, err = expandGoTst("./sampleGoProject/TEST_DOES_NOT_EXIST")
+	_, err = getGoTst("./sampleGoProject/TEST_DOES_NOT_EXIST")
 	chk.Err(err, "no tests to run")
 }

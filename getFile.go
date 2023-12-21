@@ -22,7 +22,7 @@ import (
 	"os"
 )
 
-func expandGoFile(cmd string) (string, error) {
+func getGoFile(cmd string) (string, error) {
 	var fData []byte
 	dir, fName, err := parseCmd(cmd)
 	if err == nil {
@@ -30,12 +30,10 @@ func expandGoFile(cmd string) (string, error) {
 		fData, err = os.ReadFile(fPath) //nolint:gosec // Ok.
 		if err == nil {
 			return "" +
-					szTestBgnPrefix + szFilePrefix + cmd + " -->\n" +
 					"```bash\ncat " + fPath + "\n```\n\n" +
 					"```go\n" +
 					string(fData) +
-					"```\n" +
-					szTestEndPrefix + szFilePrefix + cmd + " -->\n",
+					"```",
 				nil
 		}
 	}

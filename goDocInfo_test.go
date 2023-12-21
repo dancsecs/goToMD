@@ -32,20 +32,3 @@ func Test_GetDoc_OneLine(t *testing.T) {
 
 	chk.Str(dInfo.oneLine(), "UNKNOWN DECLARATION")
 }
-
-func Test_GetInfo_Expand(t *testing.T) {
-	chk := szTest.CaptureNothing(t)
-	defer chk.Release()
-
-	d, err := getInfo("./sampleGoProject", "TimesTwo")
-	chk.NoErr(err)
-
-	chk.Str(
-		d.expand(szDocPrefix, "TimesTwo"),
-		"<!--- goToMD::Bgn::doc::TimesTwo -->\n"+
-			"```go\nfunc TimesTwo(i int) int\n```\n"+
-			"\n"+
-			"TimesTwo returns the value times two.\n"+
-			"<!--- goToMD::End::doc::TimesTwo -->\n",
-	)
-}

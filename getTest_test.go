@@ -29,13 +29,13 @@ func Test_ExpandGoTst(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	_, err := expandGoTst("TEST_DIRECTORY_DOES_NOT_EXIST/")
+	_, err := getGoTst("TEST_DIRECTORY_DOES_NOT_EXIST/")
 	chk.Err(
 		err,
 		"relative directory must be specified in cmd: \"TEST_DIRECTORY_DOES_NOT_EXIST/\"",
 	)
 
-	_, err = expandGoTst("./TEST_DOES_NOT_EXIST")
+	_, err = getGoTst("./TEST_DOES_NOT_EXIST")
 	chk.Err(err, "no tests to run")
 }
 
