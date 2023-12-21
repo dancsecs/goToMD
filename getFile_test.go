@@ -34,6 +34,6 @@ func Test_ExpandGoFile(t *testing.T) {
 		"relative directory must be specified in cmd: \"TEST_DIRECTORY_DOES_NOT_EXIST/\"",
 	)
 
-	_, err = getGoTst("./sampleGoProject/TEST_DOES_NOT_EXIST")
+	_, err = getGoTst("./sampleGoProjectOne/TEST_DOES_NOT_EXIST")
 	chk.Err(err, "no tests to run")
 }

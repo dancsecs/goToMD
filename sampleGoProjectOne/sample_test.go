@@ -1,4 +1,4 @@
-package sampleGoProject
+package sampleGoProjectOne
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_PASS_SampleGoProject(t *testing.T) {
+func Test_PASS_sampleGoProjectOne(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -19,7 +19,7 @@ func Test_PASS_SampleGoProject(t *testing.T) {
 	chk.Str(structure.GetF1(1, 2, 3), "Total: 6")
 }
 
-func Test_FAIL_SampleGoProject(t *testing.T) {
+func Test_FAIL_sampleGoProjectOne(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 

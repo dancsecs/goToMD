@@ -32,14 +32,14 @@ const hardSpace = "\\unicode{160}"
 const hardUnderscore = "&#x332;"
 const hardPercent = "&#xFE6A;"
 
-// "--- PASS: Test_PASS_SampleGoProject (0.0s)".
-// "--- FAIL: Test_FAIL_SampleGoProject (0.0s)".
+// "--- PASS: Test_PASS_sampleGoProjectOne (0.0s)".
+// "--- FAIL: Test_FAIL_sampleGoProjectOne (0.0s)".
 var squashTestTime = regexp.MustCompile(
 	`(?m)^(--- (?:PASS|FAIL): .+?) \(\d+\.\d+s\)$`,
 )
 
 // Squash runtimes for all tests.
-// "FAIL\tgithub.com/dancsecs/szTestToMarkdown/sampleGoProject\t0.0s".
+// "FAIL\tgithub.com/dancsecs/szTestToMarkdown/sampleGoProjectOne\t0.0s".
 var squashAllTestTime = regexp.MustCompile(`(?m)^FAIL\s(.+?)\s\d+\.\d+s$`)
 
 // Squash (cached) indicator on tests.
@@ -144,7 +144,6 @@ func getGoTst(cmd string) (string, error) {
 
 	if err == nil {
 		tstCmd, tstRes, err = runTest(cDir, cAction)
-
 		if err == nil {
 			if res != "" {
 				res += "\n\n"

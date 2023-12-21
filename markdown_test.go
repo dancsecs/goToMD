@@ -89,7 +89,7 @@ func Test_Markdown_Expand(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	d, err := getInfo("./sampleGoProject", "TimesTwo")
+	d, err := getInfo("./sampleGoProjectOne", "TimesTwo")
 	chk.NoErr(err)
 
 	chk.Str(

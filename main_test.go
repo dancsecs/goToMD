@@ -27,10 +27,10 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-const sampleGoProjectPath = "." + string(os.PathSeparator) +
-	"sampleGoProject" + string(os.PathSeparator)
+const sampleGoProjectOnePath = "." + string(os.PathSeparator) +
+	"sampleGoProjectOne" + string(os.PathSeparator)
 
-func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
+func Test_sampleGoProjectOneExpandTargetOverwriteDirVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -83,7 +83,7 @@ func Test_SampleGoProjectExpandTargetOverwriteDirVerbose(t *testing.T) {
 
 ////////////
 
-func Test_SampleGoProjectReplaceNoTarget(t *testing.T) {
+func Test_sampleGoProjectOneReplaceNoTarget(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -110,7 +110,7 @@ func Test_SampleGoProjectReplaceNoTarget(t *testing.T) {
 	)
 }
 
-func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
+func Test_sampleGoProjectOneReplaceTargetCancel(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -158,7 +158,7 @@ func Test_SampleGoProjectReplaceTargetCancel(t *testing.T) {
 	)
 }
 
-func Test_SampleGoProjectReplaceTargetOverwrite(t *testing.T) {
+func Test_sampleGoProjectOneReplaceTargetOverwrite(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
@@ -193,7 +193,7 @@ func Test_SampleGoProjectReplaceTargetOverwrite(t *testing.T) {
 	chk.Stdout("Confirm overwrite of " + fName + " (Y to overwrite)?\\s")
 }
 
-func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
+func Test_sampleGoProjectOneReplaceTargetOverwriteDir(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
@@ -227,7 +227,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDir(t *testing.T) {
 	chk.Stdout("Confirm overwrite of " + dir + "/README.md (Y to overwrite)?\\s")
 }
 
-func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
+func Test_sampleGoProjectOneReplaceTargetOverwriteDirFromClean(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
@@ -268,7 +268,7 @@ func Test_SampleGoProjectReplaceTargetOverwriteDirFromClean(t *testing.T) {
 	chk.Stdout("Confirm overwrite of " + dir + "/README.md (Y to overwrite)?\\s")
 }
 
-func Test_SampleGoProjectReplaceTargetOverwriteDirVerbose(t *testing.T) {
+func Test_sampleGoProjectOneReplaceTargetOverwriteDirVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -328,7 +328,7 @@ func setup(dir string, files ...string) error {
 
 	files = append(files, "go.mod"+ext, "go.sum"+ext)
 	for i, mi := 0, len(files); i < mi && err == nil; i++ {
-		b, err = os.ReadFile(filepath.Join("sampleGoProject", files[i]))
+		b, err = os.ReadFile(filepath.Join("sampleGoProjectOne", files[i]))
 		if err == nil {
 			err = os.WriteFile(
 				filepath.Join(dir, strings.TrimSuffix(files[i], ext)),
@@ -346,7 +346,7 @@ func getTestFiles(dir, fName string) ([]string, []string, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	wntBytes, err := os.ReadFile(filepath.Join("sampleGoProject", fName))
+	wntBytes, err := os.ReadFile(filepath.Join("sampleGoProjectOne", fName))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -355,7 +355,7 @@ func getTestFiles(dir, fName string) ([]string, []string, error) {
 		nil
 }
 
-func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
+func Test_sampleGoProjectOneCleanNoTargetAlternateOut(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 
@@ -390,7 +390,7 @@ func Test_SampleGoProjectCleanNoTargetAlternateOut(t *testing.T) {
 	chk.Log("Cleaning " + rFile + " to: " + wFile)
 }
 
-func Test_SampleGoProject_CpuProfile(t *testing.T) {
+func Test_sampleGoProjectOne_CpuProfile(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
 

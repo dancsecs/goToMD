@@ -48,7 +48,7 @@ func Test_ExpandGoDcl_NoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDecl("./sampleGoProject/")
+	s, err := getDocDecl("./sampleGoProjectOne/")
 	chk.Err(err, "invalid action: a non-blank action is required")
 	chk.Str(s, "")
 }
@@ -57,11 +57,11 @@ func Test_ExpandGoDcl_Package(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDecl("./sampleGoProject/package")
+	s, err := getDocDecl("./sampleGoProjectOne/package")
 	chk.NoErr(err)
 	chk.Str(
 		s,
-		markGoCode("package sampleGoProject\n"),
+		markGoCode("package sampleGoProjectOne\n"),
 	)
 }
 
@@ -69,7 +69,7 @@ func Test_ExpandGoDcl_InvalidItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDecl("./sampleGoProject/unknownItem")
+	s, err := getDocDecl("./sampleGoProjectOne/unknownItem")
 	chk.Err(err, "unknown package object: unknownItem")
 	chk.Str(s, "")
 }
@@ -78,8 +78,8 @@ func Test_ExpandGoDcl_OneItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDecl("./sampleGoProject/TimesTwo")
-	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	s, err := getDocDecl("./sampleGoProjectOne/TimesTwo")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
 	chk.NoErr(err)
 	chk.Str(
 		s,
@@ -91,8 +91,8 @@ func Test_ExpandGoDcl_TwoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDecl("./sampleGoProject/TimesTwo TimesThree")
-	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	s, err := getDocDecl("./sampleGoProjectOne/TimesTwo TimesThree")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
 	chk.NoErr(err)
 	chk.Str(
 		s,
@@ -104,7 +104,7 @@ func Test_ExpandGoDclSingle_NoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclSingle("./sampleGoProject/")
+	s, err := getDocDeclSingle("./sampleGoProjectOne/")
 	chk.Err(err, "invalid action: a non-blank action is required")
 	chk.Str(s, "")
 }
@@ -113,11 +113,11 @@ func Test_ExpandGoDclSingle_PackageNoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclSingle("./sampleGoProject/package")
+	s, err := getDocDeclSingle("./sampleGoProjectOne/package")
 	chk.NoErr(err)
 	chk.Str(
 		s,
-		markGoCode("package sampleGoProject\n"),
+		markGoCode("package sampleGoProjectOne\n"),
 	)
 }
 
@@ -125,7 +125,7 @@ func Test_ExpandGoDclSingle_InvalidItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclSingle("./sampleGoProject/unknownItem")
+	s, err := getDocDeclSingle("./sampleGoProjectOne/unknownItem")
 	chk.Err(err, "unknown package object: unknownItem")
 	chk.Str(s, "")
 }
@@ -134,8 +134,8 @@ func Test_ExpandGoDclSingle_OneItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclSingle("./sampleGoProject/TimesTwo")
-	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	s, err := getDocDeclSingle("./sampleGoProjectOne/TimesTwo")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
 	chk.NoErr(err)
 	chk.Str(
 		s,
@@ -147,8 +147,8 @@ func Test_ExpandGoDclSingle_TwoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclSingle("./sampleGoProject/TimesTwo TimesThree")
-	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	s, err := getDocDeclSingle("./sampleGoProjectOne/TimesTwo TimesThree")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
 	chk.NoErr(err)
 	chk.Str(
 		s,
@@ -160,7 +160,7 @@ func Test_ExpandGoDclNatural_InvalidItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclNatural("./sampleGoProject/unknownItem")
+	s, err := getDocDeclNatural("./sampleGoProjectOne/unknownItem")
 	chk.Err(err, "unknown package object: unknownItem")
 	chk.Str(s, "")
 }
@@ -169,8 +169,8 @@ func Test_ExpandGoDclNatural_OneItem(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclNatural("./sampleGoProject/TimesTwo")
-	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	s, err := getDocDeclNatural("./sampleGoProjectOne/TimesTwo")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
 	chk.NoErr(err)
 	chk.Str(
 		s,
@@ -185,8 +185,8 @@ func Test_ExpandGoDclNatural_TwoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	s, err := getDocDeclNatural("./sampleGoProject/TimesTwo TimesThree")
-	chk.AddSub(`package .*$`, "package ./sampleGoProject")
+	s, err := getDocDeclNatural("./sampleGoProjectOne/TimesTwo TimesThree")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
 	chk.NoErr(err)
 	chk.Str(
 		s,

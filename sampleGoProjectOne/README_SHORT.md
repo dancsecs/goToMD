@@ -1,6 +1,6 @@
 <!--- goToMD::Auto:: See github.com/dancsecs/goToMD ** DO NOT MODIFY ** -->
 
-# Package sampleGoProject
+# Package sampleGoProjectOne
 
 This project is used by the Szerszam utility function to test its markdown
 update methods against an independent standalone project. All features
@@ -10,10 +10,10 @@ The following will be replaced by the go package documentation
 
 <!--- goToMD::Bgn::doc::./package -->
 ```go
-package sampleGoProject
+package sampleGoProjectOne
 ```
 
-Package sampleGoProject exists in order to test various go to git markdown
+Package sampleGoProjectOne exists in order to test various go to git markdown
 (gToMD) extraction utilities.  Various object will be defined that exhibit
 the various comment and declaration options permitted by gofmt.
 

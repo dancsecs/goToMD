@@ -46,17 +46,17 @@ func Test_ParseCmd(t *testing.T) {
 	chk.Str(dir, "")
 	chk.Str(action, "")
 
-	dir, action, err = parseCmd("sampleGoProject/action")
+	dir, action, err = parseCmd("sampleGoProjectOne/action")
 	chk.Err(
 		err,
-		"relative directory must be specified in cmd: \"sampleGoProject/action\"",
+		"relative directory must be specified in cmd: \"sampleGoProjectOne/action\"",
 	)
 	chk.Str(dir, "")
 	chk.Str(action, "")
 
-	dir, action, err = parseCmd("./sampleGoProject/action")
+	dir, action, err = parseCmd("./sampleGoProjectOne/action")
 	chk.NoErr(err)
-	chk.Str(dir, "./sampleGoProject")
+	chk.Str(dir, "./sampleGoProjectOne")
 	chk.Str(action, "action")
 }
 
@@ -79,17 +79,17 @@ func Test_ParseCmds1(t *testing.T) {
 	chk.Nil(actions)
 	chk.Err(err, "invalid action: a non-blank action is required")
 
-	dirs, actions, err = parseCmds("sampleGoProject/action")
+	dirs, actions, err = parseCmds("sampleGoProjectOne/action")
 	chk.Nil(dirs)
 	chk.Nil(actions)
 	chk.Err(
 		err,
-		"relative directory must be specified in cmd: \"sampleGoProject/action\"",
+		"relative directory must be specified in cmd: \"sampleGoProjectOne/action\"",
 	)
 
-	dirs, actions, err = parseCmds("./sampleGoProject/action")
+	dirs, actions, err = parseCmds("./sampleGoProjectOne/action")
 	chk.NoErr(err)
-	chk.StrSlice(dirs, []string{"./sampleGoProject"})
+	chk.StrSlice(dirs, []string{"./sampleGoProjectOne"})
 	chk.StrSlice(actions, []string{"action"})
 }
 
@@ -97,23 +97,23 @@ func Test_ParseCmds2(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
-	dirs, actions, err := parseCmds("./sampleGoProject/action /action2")
+	dirs, actions, err := parseCmds("./sampleGoProjectOne/action /action2")
 	chk.Nil(dirs)
 	chk.Nil(actions)
 	chk.Err(err, "relative directory must be specified in cmd: \"/action2\"")
 
-	dirs, actions, err = parseCmds("./sampleGoProject/action sampleGoProject/action")
+	dirs, actions, err = parseCmds("./sampleGoProjectOne/action sampleGoProjectOne/action")
 	chk.Nil(dirs)
 	chk.Nil(actions)
-	chk.Err(err, "relative directory must be specified in cmd: \"sampleGoProject/action\"")
+	chk.Err(err, "relative directory must be specified in cmd: \"sampleGoProjectOne/action\"")
 
-	dirs, actions, err = parseCmds("./sampleGoProject/action action2")
+	dirs, actions, err = parseCmds("./sampleGoProjectOne/action action2")
 	chk.NoErr(err)
-	chk.StrSlice(dirs, []string{"./sampleGoProject", "./sampleGoProject"})
+	chk.StrSlice(dirs, []string{"./sampleGoProjectOne", "./sampleGoProjectOne"})
 	chk.StrSlice(actions, []string{"action", "action2"})
 
-	dirs, actions, err = parseCmds("./sampleGoProject/action ./sampleGoProject/action2")
+	dirs, actions, err = parseCmds("./sampleGoProjectOne/action ./sampleGoProjectOne/action2")
 	chk.NoErr(err)
-	chk.StrSlice(dirs, []string{"./sampleGoProject", "./sampleGoProject"})
+	chk.StrSlice(dirs, []string{"./sampleGoProjectOne", "./sampleGoProjectOne"})
 	chk.StrSlice(actions, []string{"action", "action2"})
 }

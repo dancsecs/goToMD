@@ -56,10 +56,10 @@ func Test_RunTest(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
-	c, s, err := runTest("./sampleGoProject", "package")
+	c, s, err := runTest("./sampleGoProjectOne", "package")
 
 	chk.NoErr(err)
-	chk.Str(c, "go test -v -cover ./sampleGoProject")
+	chk.Str(c, "go test -v -cover ./sampleGoProjectOne")
 	fmt.Printf("%s\n", s)
 
 	chk.AddSub("{{insOn}}", internalTestMarkInsOn)
@@ -82,11 +82,11 @@ func Test_RunTest(t *testing.T) {
 	chk.AddSub(` `, hardSpace)
 	chk.AddSub(`_`, hardUnderscore)
 	chk.Stdout(`
-    {{latexOn}}=== RUN   Test_PASS_SampleGoProject{{latexOff}}
+    {{latexOn}}=== RUN   Test_PASS_sampleGoProjectOne{{latexOff}}
     <br>
-    {{latexOn}}--- PASS: Test_PASS_SampleGoProject (0.0s){{latexOff}}
+    {{latexOn}}--- PASS: Test_PASS_sampleGoProjectOne (0.0s){{latexOff}}
     <br>
-    {{latexOn}}=== RUN   Test_FAIL_SampleGoProject{{latexOff}}
+    {{latexOn}}=== RUN   Test_FAIL_sampleGoProjectOne{{latexOff}}
     <br>
     {{latexOn}}    sample_test.go:28: unexpected int:{{latexOff}}
     <br>
@@ -112,13 +112,13 @@ func Test_RunTest(t *testing.T) {
     <br>
     {{latexOn}}        {{wntOn}}WNT: {{wntOff}}{{chgOn}}Sum{{chgOff}}: 6{{latexOff}}
     <br>
-    {{latexOn}}--- FAIL: Test_FAIL_SampleGoProject (0.0s){{latexOff}}
+    {{latexOn}}--- FAIL: Test_FAIL_sampleGoProjectOne (0.0s){{latexOff}}
     <br>
     {{latexOn}}FAIL{{latexOff}}
     <br>
     {{latexOn}}coverage: 100.0&#xFE6A; of statements{{latexOff}}
     <br>
-    {{latexOn}}FAIL github.com/dancsecs/goToMD/sampleGoProject 0.0s{{latexOff}}
+    {{latexOn}}FAIL github.com/dancsecs/goToMD/sampleGoProjectOne 0.0s{{latexOff}}
     <br>
     {{latexOn}}FAIL{{latexOff}}
     <br>

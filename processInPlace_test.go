@@ -47,7 +47,7 @@ func setupInPlaceDirs(makeTarget bool) error {
 	var fData []byte
 
 	if makeTarget {
-		fData, err = os.ReadFile(filepath.Join(sampleGoProjectPath, fName))
+		fData, err = os.ReadFile(filepath.Join(sampleGoProjectOnePath, fName))
 		if err == nil {
 			tFile = filepath.Join(outputDir, fName)
 			err = os.WriteFile(tFile, fData, fs.FileMode(defaultPerm))
@@ -66,7 +66,7 @@ func getInPlaceFiles() (string, []string, []string, error) {
 	targetPath = filepath.Join(outputDir, fName)
 	gotBytes, err = os.ReadFile(targetPath)
 	if err == nil {
-		wntBytes, err = os.ReadFile(sampleGoProjectPath + fName)
+		wntBytes, err = os.ReadFile(sampleGoProjectOnePath + fName)
 	}
 	if err != nil {
 		return "", nil, nil, err
@@ -86,7 +86,7 @@ func Test_ProcessInPlace_NoTargetNoForceNoVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupInPlaceDirs(false))
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -106,7 +106,7 @@ func Test_ProcessInPlace_NoTargetForceNoVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupInPlaceDirs(false))
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -126,14 +126,14 @@ func Test_ProcessInPlace_NoTargetNoForceVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupInPlaceDirs(false))
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README_SHORT.md <inPlace> to: "+tFile,
+		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 	)
 
@@ -149,14 +149,14 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 	)
 	chk.NoErr(setupInPlaceDirs(false))
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README_SHORT.md <inPlace> to: "+tFile,
+		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 	)
 
@@ -174,7 +174,7 @@ func Test_ProcessInPlace_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -198,7 +198,7 @@ func Test_ProcessInPlace_CancelOverwriteForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -220,14 +220,14 @@ func Test_ProcessInPlace_CancelOverwriteNoForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README_SHORT.md <inPlace> to: "+tFile,
+		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 	)
 
@@ -247,14 +247,14 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("N\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README_SHORT.md <inPlace> to: "+tFile,
+		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 	)
 
@@ -272,7 +272,7 @@ func Test_ProcessInPlace_OverwriteNoForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -296,7 +296,7 @@ func Test_ProcessInPlace_OverwriteForceNoVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	_, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
@@ -318,14 +318,14 @@ func Test_ProcessInPlace_OverwriteNoForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README_SHORT.md <inPlace> to: "+tFile,
+		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 	)
 
@@ -345,14 +345,14 @@ func Test_ProcessInPlace_OverwriteForceVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
-	chk.NoErr(replaceMDInPlace(sampleGoProjectPath + "README_SHORT.md"))
+	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
 
 	tFile, got, wnt, err := getInPlaceFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
 	chk.Log(
-		"Expanding "+sampleGoProjectPath+"README_SHORT.md <inPlace> to: "+tFile,
+		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
 		"getInfo(\"package\")",
 	)
 

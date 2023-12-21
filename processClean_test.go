@@ -43,7 +43,7 @@ func getCleanedFiles() (string, []string, []string, error) {
 	targetPath = filepath.Join(outputDir, fName)
 	gotBytes, err = os.ReadFile(targetPath)
 	if err == nil {
-		wntBytes, err = os.ReadFile(sampleGoProjectPath + fName)
+		wntBytes, err = os.ReadFile(sampleGoProjectOnePath + fName)
 	}
 	if err != nil {
 		return "", nil, nil, err
@@ -101,7 +101,7 @@ func Test_ProcessClean_NoTargetNoForceNoVerbose(t *testing.T) {
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: false})
 	chk.NoErr(setupCleanDirs(false))
 
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -117,7 +117,7 @@ func Test_ProcessClean_NoTargetForceNoVerbose(t *testing.T) {
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: false})
 	chk.NoErr(setupCleanDirs(false))
 
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -133,13 +133,13 @@ func Test_ProcessClean_NoTargetNoForceVerbose(t *testing.T) {
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: false, verbose: true})
 	chk.NoErr(setupCleanDirs(false))
 
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	tPath, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
-	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tPath)
+	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tPath)
 }
 
 func Test_ProcessClean_NoTargetForceVerbose(t *testing.T) {
@@ -149,13 +149,13 @@ func Test_ProcessClean_NoTargetForceVerbose(t *testing.T) {
 	setupCleanGlobals(chk, cleanGlobals{forceOverwrite: true, verbose: true})
 	chk.NoErr(setupCleanDirs(false))
 
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	tPath, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
-	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tPath)
+	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tPath)
 }
 
 func Test_ProcessClean_CancelOverwriteNoForceNoVerbose(t *testing.T) {
@@ -168,7 +168,7 @@ func Test_ProcessClean_CancelOverwriteNoForceNoVerbose(t *testing.T) {
 	chk.SetStdinData("N\n")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)? " +
@@ -186,7 +186,7 @@ func Test_ProcessClean_CancelOverwriteForceNoVerbose(t *testing.T) {
 	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	chk.Stdout()
 
@@ -203,14 +203,14 @@ func Test_ProcessClean_CancelOverwriteNoForceVerbose(t *testing.T) {
 	chk.SetStdinData("N\n")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)? " +
 		"overwrite cancelled",
 	)
 
-	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
+	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tFile)
 }
 
 func Test_ProcessClean_CancelOverwriteForceVerbose(t *testing.T) {
@@ -221,12 +221,12 @@ func Test_ProcessClean_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	chk.Stdout()
 
 	tFile := filepath.Join(outputDir, "README.md.gtm")
-	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
+	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tFile)
 }
 
 func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
@@ -239,7 +239,7 @@ func Test_ProcessCLean_OverwriteNoForceNoVerbose(t *testing.T) {
 	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -259,7 +259,7 @@ func Test_ProcessCLean_OverwriteForceNoVerbose(t *testing.T) {
 	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -280,7 +280,7 @@ func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
 	chk.SetStdinData("Y\n")
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -289,7 +289,7 @@ func Test_ProcessCLean_OverwriteNoForceVerbose(t *testing.T) {
 	tFile := filepath.Join(outputDir, "README.md.gtm")
 	chk.Stdout("Confirm overwrite of " + tFile + " (Y to overwrite)?\\s")
 
-	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
+	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tFile)
 }
 
 func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
@@ -300,7 +300,7 @@ func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
 	chk.NoErr(setupCleanDirs(true))
 
 	// Run command expecting the overwrite to be cancelled.
-	chk.NoErr(cleanMD(sampleGoProjectPath + "README.md"))
+	chk.NoErr(cleanMD(sampleGoProjectOnePath + "README.md"))
 
 	_, got, wnt, err := getCleanedFiles()
 	chk.NoErr(err)
@@ -309,5 +309,5 @@ func Test_ProcessCLean_OverwriteForceVerbose(t *testing.T) {
 	chk.Stdout()
 
 	tFile := filepath.Join(outputDir, "README.md.gtm")
-	chk.Log("Cleaning " + sampleGoProjectPath + "README.md to: " + tFile)
+	chk.Log("Cleaning " + sampleGoProjectOnePath + "README.md to: " + tFile)
 }

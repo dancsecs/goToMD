@@ -1,4 +1,4 @@
-module github.com/dancsecs/goToMD/sampleGoProject
+module github.com/dancsecs/goToMD/sampleGoProjectOne
 
 go 1.18
 
