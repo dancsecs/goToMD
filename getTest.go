@@ -109,46 +109,54 @@ func runTest(dir, tests string) (string, string, error) {
 	return "", "", err
 }
 
-func getGoTst(cmd string) (string, error) {
-	var res string
-	var tstRes string
-	var tstCmd string
+func buildTestCmds(dir, action []string) ([]string, []string) {
+	if len(dir) < 1 {
+		return nil, nil
+	}
+
+	var newDir []string
+	var newAction []string
 	var cDir string
 	var cAction string
 	var i, mi int
 
-	dir, action, err := parseCmds(cmd)
+	cDir = dir[0]
+	cAction = action[0]
 
-	for i, mi = 0, len(dir); i < mi && err == nil; i++ {
-		if err == nil {
-			if cDir == "" {
-				cDir = dir[i]
-				cAction = action[i]
-				continue
-			} else {
-				if dir[i] == cDir {
-					cAction += " " + action[i]
-				} else {
-					tstCmd, tstRes, err = runTest(cDir, cAction)
-					if err == nil {
-						cDir = ""
-						if res != "" {
-							res += "\n\n"
-						}
-						res += "```bash\n" + tstCmd + "\n```\n\n" + tstRes
-					}
-				}
-			}
+	for i, mi = 1, len(dir); i < mi; i++ {
+		if dir[i] == cDir {
+			cAction += " " + action[i]
+		} else {
+			newDir = append(newDir, cDir)
+			newAction = append(newAction, cAction)
+			cDir = dir[i]
+			cAction = action[i]
 		}
 	}
+	if cDir != "" {
+		newDir = append(newDir, cDir)
+		newAction = append(newAction, cAction)
+	}
+	return newDir, newAction
+}
 
+func getGoTst(cmd string) (string, error) {
+	var res string
+	var tstRes string
+	var tstCmd string
+
+	dir, action, err := parseCmds(cmd)
 	if err == nil {
-		tstCmd, tstRes, err = runTest(cDir, cAction)
+		dir, action = buildTestCmds(dir, action)
+	}
+
+	for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+		tstCmd, tstRes, err = runTest(dir[i], action[i])
 		if err == nil {
 			if res != "" {
 				res += "\n\n"
 			}
-			res += "```bash\n" + tstCmd + "\n```\n\n" + tstRes
+			res += markBashCode(tstCmd) + "\n\n" + tstRes
 		}
 	}
 

@@ -24,7 +24,7 @@ import (
 	"github.com/dancsecs/szTest"
 )
 
-func Test_ExpandGoFile(t *testing.T) {
+func Test_GetFile_GetGoFileInvalid(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
 
@@ -36,4 +36,41 @@ func Test_ExpandGoFile(t *testing.T) {
 
 	_, err = getGoTst("./sampleGoProjectOne/TEST_DOES_NOT_EXIST")
 	chk.Err(err, "no tests to run")
+}
+
+func Test_GetFile_GetGoFile(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	d, err := getGoFile("./sampleGoProjectOne/crumb.go")
+	chk.NoErr(err)
+	chk.Str(
+		d,
+		""+
+			markBashCode("cat ./sampleGoProjectOne/crumb.go")+
+			"\n\n"+
+			markGoCode("package sampleGoProjectOne"),
+	)
+}
+
+func Test_GetFile_GetGoFile2(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	d, err := getGoFile(
+		"./sampleGoProjectOne/crumb.go ./sampleGoProjectTwo/crumb.go",
+	)
+	chk.NoErr(err)
+	chk.Str(
+		d,
+		""+
+			markBashCode("cat ./sampleGoProjectOne/crumb.go")+
+			"\n\n"+
+			markGoCode("package sampleGoProjectOne")+
+			"\n\n"+
+			markBashCode("cat ./sampleGoProjectTwo/crumb.go")+
+			"\n\n"+
+			markGoCode("package sampleGoProjectTwo")+
+			"",
+	)
 }

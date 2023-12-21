@@ -26,20 +26,22 @@ func markGoCode(content string) string {
 	return "```go\n" + strings.TrimRight(content, "\n") + "\n```"
 }
 
+func markBashCode(content string) string {
+	return "```bash\n" + strings.TrimRight(content, "\n") + "\n```"
+}
+
 func getDoc(cmd string) (string, error) {
 	var d *docInfo
 	res := ""
 	dir, action, err := parseCmds(cmd)
-	if err == nil {
-		for i, mi := 0, len(dir); i < mi && err == nil; i++ {
-			d, err = getInfo(dir[i], action[i])
-			if err == nil {
-				if res != "" {
-					res += "\n\n"
-				}
-				res += d.declGoLang() + "\n\n" +
-					d.docMarkdown()
+	for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+		d, err = getInfo(dir[i], action[i])
+		if err == nil {
+			if res != "" {
+				res += "\n\n"
 			}
+			res += d.declGoLang() + "\n\n" +
+				d.docMarkdown()
 		}
 	}
 	if err == nil {

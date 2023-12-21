@@ -44,6 +44,21 @@ func Test_MarkGoCode(t *testing.T) {
 	)
 }
 
+func Test_MarkBashCode(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	chk.Str(
+		markBashCode("ABC"),
+		"```bash\nABC\n```",
+	)
+
+	chk.Str(
+		markBashCode("ABC\n"),
+		"```bash\nABC\n```",
+	)
+}
+
 func Test_ExpandGoDcl_NoItems(t *testing.T) {
 	chk := szTest.CaptureNothing(t)
 	defer chk.Release()
@@ -197,5 +212,23 @@ func Test_ExpandGoDclNatural_TwoItems(t *testing.T) {
 				"// TimesThree returns the value times three.\n"+
 				"func TimesThree(i int) int",
 		),
+	)
+}
+
+func Test_GetDoc_GetDoc_TwoItems(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	s, err := getDoc("./sampleGoProjectOne/TimesTwo TimesThree")
+	chk.AddSub(`package .*$`, "package ./sampleGoProjectOne")
+	chk.NoErr(err)
+	chk.Str(
+		s,
+		""+
+			markGoCode("func TimesTwo(i int) int")+"\n\n"+
+			"TimesTwo returns the value times two.\n"+
+			"\n"+
+			markGoCode("func TimesThree(i int) int")+"\n\n"+
+			"TimesThree returns the value times three.",
 	)
 }

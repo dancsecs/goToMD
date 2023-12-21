@@ -56,10 +56,9 @@ func Test_RunTest(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
 
-	c, s, err := runTest("./sampleGoProjectOne", "package")
+	s, err := getGoTst("./sampleGoProjectOne/package ./sampleGoProjectTwo/package")
 
 	chk.NoErr(err)
-	chk.Str(c, "go test -v -cover ./sampleGoProjectOne")
 	fmt.Printf("%s\n", s)
 
 	chk.AddSub("{{insOn}}", internalTestMarkInsOn)
@@ -81,7 +80,8 @@ func Test_RunTest(t *testing.T) {
 	chk.AddSub(`\t\d+\.\d+s`, "\t0.0s")
 	chk.AddSub(` `, hardSpace)
 	chk.AddSub(`_`, hardUnderscore)
-	chk.Stdout(`
+	chk.Stdout("" +
+		markBashCode("go test -v -cover ./sampleGoProjectOne") + "\n" + `
     {{latexOn}}=== RUN   Test_PASS_sampleGoProjectOne{{latexOff}}
     <br>
     {{latexOn}}--- PASS: Test_PASS_sampleGoProjectOne (0.0s){{latexOff}}
@@ -122,5 +122,81 @@ func Test_RunTest(t *testing.T) {
     <br>
     {{latexOn}}FAIL{{latexOff}}
     <br>
+
+    ` +
+		markBashCode("go test -v -cover ./sampleGoProjectTwo") + "\n" + `
+    {{latexOn}}=== RUN   Test_PASS_sampleGoProjectTwo{{latexOff}}
+    <br>
+    {{latexOn}}--- PASS: Test_PASS_sampleGoProjectTwo (0.0s){{latexOff}}
+    <br>
+    {{latexOn}}=== RUN   Test_FAIL_sampleGoProjectTwo{{latexOff}}
+    <br>
+    {{latexOn}}    sample_test.go:28: unexpected int:{{latexOff}}
+    <br>
+    {{latexOn}}        {{msgOn}}2+2=5 (is true for big values of two){{msgOff}}:{{latexOff}}
+    <br>
+    {{latexOn}}        {{gotOn}}GOT: {{gotOff}}{{chgOn}}4{{chgOff}}{{latexOff}}
+    <br>
+    {{latexOn}}        {{wntOn}}WNT: {{wntOff}}{{chgOn}}5{{chgOff}}{{latexOff}}
+    <br>
+    {{latexOn}}    sample_test.go:29: unexpected string:{{latexOff}}
+    <br>
+    {{latexOn}}        {{gotOn}}GOT: {{gotOff}}{{insOn}}New in Got{{insOff}} Similar in ({{chgOn}}1{{chgOff}}) both{{latexOff}}
+    <br>
+    {{latexOn}}        {{wntOn}}WNT: {{wntOff}} Similar in ({{chgOn}}2{{chgOff}}) both{{delOn}}, new in Wnt{{delOff}}{{latexOff}}
+    <br>
+    {{latexOn}}    sample_test.go:35: Unexpected stdout Entry: got (1 lines) - want (1 lines){{latexOff}}
+    <br>
+    {{latexOn}}        {{chgOn}}0{{chgOff}}:{{chgOn}}0{{chgOff}} This output line {{delOn}}is{{delOff}}{{sepOn}}/{{sepOff}}{{insOn}}will be{{insOff}} different{{latexOff}}
+    <br>
+    {{latexOn}}    sample_test.go:39: unexpected string:{{latexOff}}
+    <br>
+    {{latexOn}}        {{gotOn}}GOT: {{gotOff}}{{chgOn}}Total{{chgOff}}: 6{{latexOff}}
+    <br>
+    {{latexOn}}        {{wntOn}}WNT: {{wntOff}}{{chgOn}}Sum{{chgOff}}: 6{{latexOff}}
+    <br>
+    {{latexOn}}--- FAIL: Test_FAIL_sampleGoProjectTwo (0.0s){{latexOff}}
+    <br>
+    {{latexOn}}FAIL{{latexOff}}
+    <br>
+    {{latexOn}}coverage: 100.0&#xFE6A; of statements{{latexOff}}
+    <br>
+    {{latexOn}}FAIL github.com/dancsecs/goToMD/sampleGoProjectTwo 0.0s{{latexOff}}
+    <br>
+    {{latexOn}}FAIL{{latexOff}}
+    <br>
   `)
+}
+
+func Test_GetTest_BuildTestCmds(t *testing.T) {
+	chk := szTest.CaptureNothing(t)
+	defer chk.Release()
+
+	dirs := []string{}
+	actions := []string{}
+	d, a := buildTestCmds(dirs, actions)
+	chk.StrSlice(d, nil)
+	chk.StrSlice(a, nil)
+
+	actions = append(actions, "D1A1")
+	d, a = buildTestCmds(dirs, actions)
+	chk.StrSlice(d, nil)
+	chk.StrSlice(a, nil)
+
+	dirs = append(dirs, "D1")
+	d, a = buildTestCmds(dirs, actions)
+	chk.StrSlice(d, []string{"D1"})
+	chk.StrSlice(a, []string{"D1A1"})
+
+	dirs = append(dirs, "D1")
+	actions = append(actions, "D1A2")
+	d, a = buildTestCmds(dirs, actions)
+	chk.StrSlice(d, []string{"D1"})
+	chk.StrSlice(a, []string{"D1A1 D1A2"})
+
+	dirs = append(dirs, "D2")
+	actions = append(actions, "D2A1")
+	d, a = buildTestCmds(dirs, actions)
+	chk.StrSlice(d, []string{"D1", "D2"})
+	chk.StrSlice(a, []string{"D1A1 D1A2", "D2A1"})
 }

@@ -24,18 +24,22 @@ import (
 
 func getGoFile(cmd string) (string, error) {
 	var fData []byte
-	dir, fName, err := parseCmd(cmd)
-	if err == nil {
-		fPath := dir + string(os.PathSeparator) + fName
+	var res = ""
+	dir, fName, err := parseCmds(cmd)
+	for i, mi := 0, len(dir); i < mi && err == nil; i++ {
+		fPath := dir[i] + string(os.PathSeparator) + fName[i]
 		fData, err = os.ReadFile(fPath) //nolint:gosec // Ok.
 		if err == nil {
-			return "" +
-					"```bash\ncat " + fPath + "\n```\n\n" +
-					"```go\n" +
-					string(fData) +
-					"```",
-				nil
+			if res != "" {
+				res += "\n\n"
+			}
+			res += "" +
+				markBashCode("cat "+fPath) + "\n\n" +
+				markGoCode(string(fData))
 		}
+	}
+	if err == nil {
+		return res, nil
 	}
 	return "", err
 }
