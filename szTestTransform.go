@@ -148,6 +148,24 @@ func translateToTestSymbols(s string) string {
 	return s
 }
 
+func translateToBlankSymbols(s string) string {
+	s = strings.ReplaceAll(s, markDelOn, "")
+	s = strings.ReplaceAll(s, markDelOff, "")
+	s = strings.ReplaceAll(s, markInsOn, "")
+	s = strings.ReplaceAll(s, markInsOff, "")
+	s = strings.ReplaceAll(s, markChgOn, "")
+	s = strings.ReplaceAll(s, markChgOff, "")
+	s = strings.ReplaceAll(s, markSepOn, "")
+	s = strings.ReplaceAll(s, markSepOff, "")
+	s = strings.ReplaceAll(s, markWntOn, "")
+	s = strings.ReplaceAll(s, markWntOff, "")
+	s = strings.ReplaceAll(s, markGotOn, "")
+	s = strings.ReplaceAll(s, markGotOff, "")
+	s = strings.ReplaceAll(s, markMsgOn, "")
+	s = strings.ReplaceAll(s, markMsgOff, "")
+	return s
+}
+
 func marksToMarkdownHTML(source string) (string, error) {
 	iCloseMarkExpected := ""
 	newS := ""
@@ -166,7 +184,11 @@ func marksToMarkdownHTML(source string) (string, error) {
 					source,
 				)
 			}
-			return translateToTestSymbols(newS + source), nil
+
+			if szColorize {
+				return translateToTestSymbols(newS + source), nil
+			}
+			return translateToBlankSymbols(newS + source), nil
 		}
 
 		// Otherwise we found a Mark.  Move all text up to the next mark from

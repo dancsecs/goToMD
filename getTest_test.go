@@ -52,9 +52,14 @@ func Test_GetTest_RunTestNotDirectory(t *testing.T) {
 	)
 }
 
-func Test_GetTest_RunTest(t *testing.T) {
+func Test_GetTest_RunTestColorize(t *testing.T) {
 	chk := szTest.CaptureStdout(t)
 	defer chk.Release()
+
+	szColorize = true
+	defer func() {
+		szColorize = false
+	}()
 
 	s, err := getGoTst("./sampleGoProjectOne/package ./sampleGoProjectTwo/package")
 
@@ -165,6 +170,67 @@ func Test_GetTest_RunTest(t *testing.T) {
     <br>
     {{latexOn}}FAIL{{latexOff}}
     <br>
+  `)
+}
+
+func Test_GetTest_RunTestNoColor(t *testing.T) {
+	chk := szTest.CaptureStdout(t)
+	defer chk.Release()
+
+	s, err := getGoTst("./sampleGoProjectOne/package ./sampleGoProjectTwo/package")
+
+	chk.NoErr(err)
+	fmt.Printf("%s\n", s)
+
+	chk.Stdout("" +
+		markBashCode("go test -v -cover ./sampleGoProjectOne") + "\n" + `
+    <pre>
+    === RUN   Test_PASS_sampleGoProjectOne
+    --- PASS: Test_PASS_sampleGoProjectOne (0.0s)
+    === RUN   Test_FAIL_sampleGoProjectOne
+    \s   sample_test.go:28: unexpected int:
+    \s       2+2=5 (is true for big values of two):
+    \s       GOT: 4
+    \s       WNT: 5
+    \s   sample_test.go:29: unexpected string:
+    \s       GOT: New in Got Similar in (1) both
+    \s       WNT:  Similar in (2) both, new in Wnt
+    \s   sample_test.go:35: Unexpected stdout Entry: got (1 lines) - want (1 lines)
+    \s       0:0 This output line is/will be different
+    \s   sample_test.go:39: unexpected string:
+    \s       GOT: Total: 6
+    \s       WNT: Sum: 6
+    --- FAIL: Test_FAIL_sampleGoProjectOne (0.0s)
+    FAIL
+    coverage: 100.0&#xFE6A; of statements
+    FAIL github.com/dancsecs/goToMD/sampleGoProjectOne 0.0s
+    FAIL
+    </pre>
+
+    ` +
+		markBashCode("go test -v -cover ./sampleGoProjectTwo") + "\n" + `
+    <pre>
+    === RUN   Test_PASS_sampleGoProjectTwo
+    --- PASS: Test_PASS_sampleGoProjectTwo (0.0s)
+    === RUN   Test_FAIL_sampleGoProjectTwo
+    \s   sample_test.go:28: unexpected int:
+    \s       2+2=5 (is true for big values of two):
+    \s       GOT: 4
+    \s       WNT: 5
+    \s   sample_test.go:29: unexpected string:
+    \s       GOT: New in Got Similar in (1) both
+    \s       WNT:  Similar in (2) both, new in Wnt
+    \s   sample_test.go:35: Unexpected stdout Entry: got (1 lines) - want (1 lines)
+    \s       0:0 This output line is/will be different
+    \s   sample_test.go:39: unexpected string:
+    \s       GOT: Total: 6
+    \s       WNT: Sum: 6
+    --- FAIL: Test_FAIL_sampleGoProjectTwo (0.0s)
+    FAIL
+    coverage: 100.0&#xFE6A; of statements
+    FAIL github.com/dancsecs/goToMD/sampleGoProjectTwo 0.0s
+    FAIL
+    </pre>
   `)
 }
 

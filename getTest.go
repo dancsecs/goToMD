@@ -76,19 +76,13 @@ func runTest(dir, tests string) (string, string, error) {
 	if err == nil {
 		res, err = marksToMarkdownHTML(string(rawRes))
 	}
-	if err == nil {
+	if err == nil && szColorize {
 		res = squashTestTime.ReplaceAllString(res, `${1} (0.0s)`)
-
 		res = squashAllTestTime.ReplaceAllString(res, `FAIL ${1} 0.0s`)
-
 		res = squashCached.ReplaceAllString(res, `${1}${2}`)
-
 		res = strings.ReplaceAll(res, "\t", tabSPaces)
-
 		res = strings.ReplaceAll(res, "%", hardPercent)
-
 		res = strings.ReplaceAll(res, " ", hardSpace)
-
 		res = strings.ReplaceAll(res, "_", hardUnderscore)
 
 		latexRes := ""
@@ -102,9 +96,17 @@ func runTest(dir, tests string) (string, string, error) {
 		res = latexRes
 		//  res = "<---\n" + string(rawRes) + "\n -->\n\n" + latexRes
 	}
+	if err == nil && !szColorize {
+		res = "<pre>\n" + strings.TrimRight(res, "\n") + "\n</pre>"
+		res = squashTestTime.ReplaceAllString(res, `${1} (0.0s)`)
+		res = squashAllTestTime.ReplaceAllString(res, `FAIL ${1} 0.0s`)
+		res = squashCached.ReplaceAllString(res, `${1}${2}`)
+		res = strings.ReplaceAll(res, "\t", tabSPaces)
+		res = strings.ReplaceAll(res, "%", hardPercent)
+	}
 
 	if err == nil {
-		return "go " + strings.Join(args, " "), res, nil
+		return "go " + strings.Join(args, " "), strings.TrimRight(res, "\n"), nil
 	}
 	return "", "", err
 }

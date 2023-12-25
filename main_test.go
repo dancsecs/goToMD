@@ -42,6 +42,7 @@ func Test_sampleGoProjectOneExpandTargetOverwriteDirVerbose(t *testing.T) {
 	chk.SetupArgsAndFlags([]string{
 		"programName",
 		"-v",
+		"-z",
 		dir,
 	})
 
@@ -171,6 +172,7 @@ func Test_sampleGoProjectOneReplaceTargetOverwrite(t *testing.T) {
 	chk.SetupArgsAndFlags([]string{
 		"programName",
 		"-r",
+		"-z",
 		fName,
 	})
 
@@ -205,6 +207,7 @@ func Test_sampleGoProjectOneReplaceTargetOverwriteDir(t *testing.T) {
 	chk.SetupArgsAndFlags([]string{
 		"programName",
 		"-r",
+		"-z",
 		dir,
 	})
 
@@ -246,6 +249,7 @@ func Test_sampleGoProjectOneReplaceTargetOverwriteDirFromClean(t *testing.T) {
 	chk.SetupArgsAndFlags([]string{
 		"programName",
 		"-r",
+		"-z",
 		dir,
 	})
 
@@ -281,6 +285,7 @@ func Test_sampleGoProjectOneReplaceTargetOverwriteDirVerbose(t *testing.T) {
 		"programName",
 		"-v",
 		"-r",
+		"-z",
 		dir,
 	})
 
@@ -407,6 +412,7 @@ func Test_sampleGoProjectOne_CpuProfile(t *testing.T) {
 		"-o", altDir,
 		"-U", pprofFilePath,
 		"-u", "1",
+		"-z",
 		filepath.Join(dir, "README.md.gtm"),
 	})
 

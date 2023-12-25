@@ -34,6 +34,7 @@ var (
 	forceOverwrite       = false
 	replace              = false
 	verbose              = false
+	szColorize           = false
 	outputDir            = "."
 	defaultPerm          = defaultPermissions
 	showLicense          = false
@@ -46,7 +47,7 @@ func usage() {
 	fmt.Fprint(flag.CommandLine.Output(),
 		"Usage of ", cmdName,
 		" [-c | -r]"+
-			" [-fv]"+
+			" [-fvz]"+
 			" [-p perm]"+
 			" [-o outDir]"+
 			" [-U file]"+
@@ -70,6 +71,7 @@ func captureFlagDefaults() string {
 	return buf.String()
 }
 
+//nolint:funlen // Ok.
 func processArgs() {
 	flag.BoolVar(&verbose, "v", false,
 		"Provide more information when processing.",
@@ -86,6 +88,9 @@ func processArgs() {
 	)
 	flag.BoolVar(&forceOverwrite, "f", false,
 		"Do not confirm overwrite of destination.",
+	)
+	flag.BoolVar(&szColorize, "z", false,
+		"Colorize go test output.",
 	)
 	flag.StringVar(&outputDir, "o", ".",
 		"Direct all output to the specified directory.",
