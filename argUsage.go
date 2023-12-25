@@ -47,7 +47,9 @@ func usage() {
 	fmt.Fprint(flag.CommandLine.Output(),
 		"Usage of ", cmdName,
 		" [-c | -r]"+
-			" [-fvz]"+
+			" [-f]"+
+			" [-v]"+
+			" [-z]"+
 			" [-p perm]"+
 			" [-o outDir]"+
 			" [-U file]"+
