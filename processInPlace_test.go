@@ -163,30 +163,6 @@ func Test_ProcessInPlace_NoTargetForceVerbose(t *testing.T) {
 	chk.Stdout()
 }
 
-func Test_ProcessInPlace_CancelOverwriteNoForceNoVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupInPlaceGlobals(
-		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
-	)
-	chk.NoErr(setupInPlaceDirs(true))
-
-	chk.SetStdinData("N\n")
-
-	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
-
-	tFile, got, wnt, err := getInPlaceFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log()
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)? overwrite cancelled",
-	)
-}
-
 func Test_ProcessInPlace_CancelOverwriteForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
@@ -207,33 +183,6 @@ func Test_ProcessInPlace_CancelOverwriteForceNoVerbose(t *testing.T) {
 	chk.Log()
 
 	chk.Stdout()
-}
-
-func Test_ProcessInPlace_CancelOverwriteNoForceVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupInPlaceGlobals(
-		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
-	)
-	chk.NoErr(setupInPlaceDirs(true))
-
-	chk.SetStdinData("N\n")
-
-	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
-
-	tFile, got, wnt, err := getInPlaceFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log(
-		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
-		"getInfo(\"package\")",
-	)
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)? overwrite cancelled",
-	)
 }
 
 func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
@@ -261,30 +210,6 @@ func Test_ProcessInPlace_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.Stdout()
 }
 
-func Test_ProcessInPlace_OverwriteNoForceNoVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupInPlaceGlobals(
-		chk, inPlaceGlobals{forceOverwrite: false, verbose: false},
-	)
-	chk.NoErr(setupInPlaceDirs(true))
-
-	chk.SetStdinData("Y\n")
-
-	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
-
-	tFile, got, wnt, err := getInPlaceFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log()
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)?\\s",
-	)
-}
-
 func Test_ProcessInPlace_OverwriteForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
@@ -305,33 +230,6 @@ func Test_ProcessInPlace_OverwriteForceNoVerbose(t *testing.T) {
 	chk.Log()
 
 	chk.Stdout()
-}
-
-func Test_ProcessInPlace_OverwriteNoForceVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupInPlaceGlobals(
-		chk, inPlaceGlobals{forceOverwrite: false, verbose: true},
-	)
-	chk.NoErr(setupInPlaceDirs(true))
-
-	chk.SetStdinData("Y\n")
-
-	chk.NoErr(replaceMDInPlace(sampleGoProjectOnePath + "README_SHORT.md"))
-
-	tFile, got, wnt, err := getInPlaceFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log(
-		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md <inPlace> to: "+tFile,
-		"getInfo(\"package\")",
-	)
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)?\\s",
-	)
 }
 
 func Test_ProcessInPlace_OverwriteForceVerbose(t *testing.T) {

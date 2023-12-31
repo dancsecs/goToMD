@@ -39,6 +39,9 @@ func Test_sampleGoProjectOneExpandTargetOverwriteDirVerbose(t *testing.T) {
 		setup(dir, "README.md", "README.md.gtm", "sample_test.go", "sample.go"),
 	)
 
+	rName := filepath.Join(dir, "README.md.gtm")
+	tName := filepath.Join(dir, "README.md")
+
 	chk.SetupArgsAndFlags([]string{
 		"programName",
 		"-v",
@@ -48,6 +51,8 @@ func Test_sampleGoProjectOneExpandTargetOverwriteDirVerbose(t *testing.T) {
 
 	chk.SetStdinData("Y\n")
 
+	chk.NoErr(os.Truncate(tName, 2))
+
 	// Run command expecting the overwrite to be cancelled.
 	main()
 
@@ -55,8 +60,6 @@ func Test_sampleGoProjectOneExpandTargetOverwriteDirVerbose(t *testing.T) {
 	chk.NoErr(err)
 	chk.StrSlice(got, wnt)
 
-	rName := filepath.Join(dir, "README.md.gtm")
-	tName := filepath.Join(dir, "README.md")
 	chk.Stdout(
 		"filesToProcess:  "+rName,
 		"Confirm overwrite of "+tName+" (Y to overwrite)?\\s",

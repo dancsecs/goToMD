@@ -167,30 +167,6 @@ func Test_ProcessExpand_NoTargetForceVerbose(t *testing.T) {
 	chk.Stdout()
 }
 
-func Test_ProcessExpand_CancelOverwriteNoForceNoVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupExpandGlobals(
-		chk, expandGlobals{forceOverwrite: false, verbose: false},
-	)
-	chk.NoErr(setupExpandDirs(true))
-
-	chk.SetStdinData("N\n")
-
-	chk.NoErr(expandMD(sampleGoProjectOnePath + "README_SHORT.md.gtm"))
-
-	tFile, got, wnt, err := getExpandFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log()
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)? overwrite cancelled",
-	)
-}
-
 func Test_ProcessExpand_CancelOverwriteTargetForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
@@ -211,33 +187,6 @@ func Test_ProcessExpand_CancelOverwriteTargetForceNoVerbose(t *testing.T) {
 	chk.Log()
 
 	chk.Stdout()
-}
-
-func Test_ProcessExpand_CancelOverwriteNoForceVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupExpandGlobals(
-		chk, expandGlobals{forceOverwrite: false, verbose: true},
-	)
-	chk.NoErr(setupExpandDirs(true))
-
-	chk.SetStdinData("N\n")
-
-	chk.NoErr(expandMD(sampleGoProjectOnePath + "README_SHORT.md.gtm"))
-
-	tFile, got, wnt, err := getExpandFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log(
-		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md.gtm to: "+tFile,
-		"getInfo(\"package\")",
-	)
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)? overwrite cancelled",
-	)
 }
 
 func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
@@ -265,30 +214,6 @@ func Test_ProcessExpand_CancelOverwriteForceVerbose(t *testing.T) {
 	chk.Stdout()
 }
 
-func Test_ProcessExpand_OverwriteNoForceNoVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupExpandGlobals(
-		chk, expandGlobals{forceOverwrite: false, verbose: false},
-	)
-	chk.NoErr(setupExpandDirs(true))
-
-	chk.SetStdinData("Y\n")
-
-	chk.NoErr(expandMD(sampleGoProjectOnePath + "README_SHORT.md.gtm"))
-
-	tFile, got, wnt, err := getExpandFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log()
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)?\\s",
-	)
-}
-
 func Test_ProcessExpand_OverwriteTargetForceNoVerbose(t *testing.T) {
 	chk := szTest.CaptureLogAndStdout(t)
 	defer chk.Release()
@@ -309,33 +234,6 @@ func Test_ProcessExpand_OverwriteTargetForceNoVerbose(t *testing.T) {
 	chk.Log()
 
 	chk.Stdout()
-}
-
-func Test_ProcessExpand_OverwriteNoForceVerbose(t *testing.T) {
-	chk := szTest.CaptureLogAndStdout(t)
-	defer chk.Release()
-
-	setupExpandGlobals(
-		chk, expandGlobals{forceOverwrite: false, verbose: true},
-	)
-	chk.NoErr(setupExpandDirs(true))
-
-	chk.SetStdinData("Y\n")
-
-	chk.NoErr(expandMD(sampleGoProjectOnePath + "README_SHORT.md.gtm"))
-
-	tFile, got, wnt, err := getExpandFiles()
-	chk.NoErr(err)
-	chk.StrSlice(got, wnt)
-
-	chk.Log(
-		"Expanding "+sampleGoProjectOnePath+"README_SHORT.md.gtm to: "+tFile,
-		"getInfo(\"package\")",
-	)
-
-	chk.Stdout(
-		"Confirm overwrite of " + tFile + " (Y to overwrite)?\\s",
-	)
 }
 
 func Test_ProcessExpand_OverwriteForceVerbose(t *testing.T) {

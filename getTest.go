@@ -50,6 +50,7 @@ var squashCached = regexp.MustCompile(
 	`(?m)^(ok\s+.+?\s+)(?:\(cached\)|\d+\.\d+s)\s+(.*)$`,
 )
 
+//nolint:funlen // Ok.
 func runTest(dir, tests string) (string, string, error) {
 	var rawRes []byte
 	var args []string

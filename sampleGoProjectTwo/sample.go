@@ -1,6 +1,6 @@
-// Package sampleGoProjectTwo exists in order to test various go to git markdown
-// (gToMD) extraction utilities.  Various object will be defined that exhibit
-// the various comment and declaration options permitted by gofmt.
+// Package sampleGoProjectTwo exists in order to test various go to git
+// markdown (gToMD) extraction utilities.  Various object will be defined that
+// exhibit the various comment and declaration options permitted by gofmt.
 //
 // # Heading
 //

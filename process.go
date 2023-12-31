@@ -26,11 +26,19 @@ import (
 	"strings"
 )
 
-func confirmOverwrite(fPath string) (bool, error) {
+func confirmOverwrite(fPath string, data string) (bool, error) {
 	var ok bool
+	var oldData []byte
 	_, err := os.Stat(fPath)
 	if errors.Is(err, os.ErrNotExist) {
 		return true, nil
+	}
+	if err == nil {
+		oldData, err = os.ReadFile(fPath) //nolint:gosec // Ok.
+	}
+	if err == nil && strings.TrimRight(string(oldData), "\n") == data {
+		fmt.Println("No Chahges to: " + fPath)
+		return false, nil
 	}
 	if err == nil {
 		fmt.Print("Confirm overwrite of ", fPath, " (Y to overwrite)? ")
@@ -48,9 +56,10 @@ func confirmOverwrite(fPath string) (bool, error) {
 func writeFile(fPath string, data string) error {
 	var err error
 
+	data = strings.ReplaceAll(data, "\t", "    ")
 	okToOverwrite := forceOverwrite
 	if !okToOverwrite {
-		okToOverwrite, err = confirmOverwrite(fPath)
+		okToOverwrite, err = confirmOverwrite(fPath, data)
 	}
 
 	if err == nil && okToOverwrite {
@@ -62,7 +71,7 @@ func writeFile(fPath string, data string) error {
 			os.FileMode(defaultPerm),
 		)
 		if err == nil {
-			_, err = f.WriteString(strings.ReplaceAll(data, "\t", "    ") + "\n")
+			_, err = f.WriteString(data + "\n")
 			if err == nil {
 				err = f.Close()
 			}

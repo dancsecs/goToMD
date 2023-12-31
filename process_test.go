@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	"path/filepath"
+	"testing"
 
 	"github.com/dancsecs/szTest"
 )
@@ -78,3 +80,25 @@ func setupTest(
 //  func Test_Process_Stop(t *testing.T) {
 //  	t.Fatal("STOPPING")
 //  }
+
+func Test_Process_ConfirmOverwrite(t *testing.T) {
+	chk := szTest.CaptureStdout(t)
+	defer chk.Release()
+
+	data := "The data."
+
+	dir := chk.CreateTmpDir()
+
+	ok, err := confirmOverwrite(filepath.Join(dir, "noFile.dat"), data)
+	chk.NoErr(err)
+	chk.True(ok)
+
+	fPath := chk.CreateTmpFile([]byte(data))
+	ok, err = confirmOverwrite(fPath, data)
+	chk.NoErr(err)
+	chk.False(ok)
+
+	chk.Stdout(
+		"No Chahges to: " + fPath,
+	)
+}
