@@ -37,7 +37,7 @@ func confirmOverwrite(fPath string, data string) (bool, error) {
 		oldData, err = os.ReadFile(fPath) //nolint:gosec // Ok.
 	}
 	if err == nil && strings.TrimRight(string(oldData), "\n") == data {
-		fmt.Println("No changes to: " + fPath)
+		fmt.Println("No change: " + fPath)
 		return false, nil
 	}
 	if err == nil {
