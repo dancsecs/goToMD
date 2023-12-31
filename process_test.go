@@ -99,6 +99,6 @@ func Test_Process_ConfirmOverwrite(t *testing.T) {
 	chk.False(ok)
 
 	chk.Stdout(
-		"No Chahges to: " + fPath,
+		"No changes to: " + fPath,
 	)
 }
